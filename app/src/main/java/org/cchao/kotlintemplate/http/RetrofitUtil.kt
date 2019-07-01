@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okio.Buffer
 import org.cchao.kotlintemplate.BuildConfig
 import org.cchao.kotlintemplate.Constant
+import org.cchao.kotlintemplate.util.DebugLog
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 internal class RetrofitUtil private constructor() {
@@ -40,9 +41,9 @@ internal class RetrofitUtil private constructor() {
                     request.body()!!.writeTo(buffer)
                     val source = response.body()!!.source()
                     source.request(java.lang.Long.MAX_VALUE)
-                    Log.d("Retrofit", request.method() + "-->" + request.url())
-                    Log.d("Retrofit-Request", buffer.readUtf8())
-                    Log.d("Retrofit-Response", source.buffer().clone().readUtf8())
+                    DebugLog.d("Retrofit", request.method() + "-->" + request.url())
+                    DebugLog.d("Retrofit-Request", buffer.readUtf8())
+                    DebugLog.d("Retrofit-Response", source.buffer().clone().readUtf8())
                     response
                 })
                 try {

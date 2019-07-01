@@ -2,7 +2,7 @@ package org.cchao.kotlintemplate.model
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 data class TestModel(

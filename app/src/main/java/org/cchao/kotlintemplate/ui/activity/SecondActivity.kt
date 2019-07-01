@@ -4,7 +4,7 @@ import org.cchao.kotlintemplate.ui.base.BaseActivity
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 class SecondActivity : BaseActivity() {

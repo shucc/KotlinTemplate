@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 abstract class BaseFragment : Fragment() {

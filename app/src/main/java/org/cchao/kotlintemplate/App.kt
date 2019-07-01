@@ -4,7 +4,7 @@ import android.app.Application
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 class App : Application() {

@@ -9,7 +9,7 @@ import retrofit2.http.Url
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 interface Api {

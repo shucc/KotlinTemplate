@@ -10,7 +10,7 @@ import org.cchao.kotlintemplate.expansion.getStatusHeight
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 abstract class BaseDialog(context: Context) : Dialog(context, R.style.CustomDialog) {

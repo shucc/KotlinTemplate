@@ -5,7 +5,7 @@ import org.cchao.kotlintemplate.http.HttpRequestBody
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 class TestBody : HttpRequestBody() {

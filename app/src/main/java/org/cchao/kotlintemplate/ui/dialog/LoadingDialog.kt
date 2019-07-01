@@ -7,7 +7,7 @@ import org.cchao.kotlintemplate.ui.base.BaseDialog
 
 /**
  * @author cchen6
- * @Date on ${Date}
+ * @Date on 2019/6/19
  * @Description
  */
 class LoadingDialog(context: Context) : BaseDialog(context) {

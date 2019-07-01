@@ -68,7 +68,7 @@
 -keep class **$Properties
 
 -keep class com.xunao.cssc.model.** {*;}
--keep class com.xunao.cssc.http.entity.** {*;}
+-keep class com.xunao.cssc.http.body.** {*;}
 -keepclasseswithmembers class com.xunao.cssc.http.HttpResponseBody {
    <fields>;
    <methods>;
