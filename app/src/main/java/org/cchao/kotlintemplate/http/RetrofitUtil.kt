@@ -61,18 +61,17 @@ internal class RetrofitUtil private constructor() {
                         .withReadTimeout(readTimeout, TimeUnit.MILLISECONDS)
                         .withWriteTimeout(writeTimeout, TimeUnit.MILLISECONDS)
                         .proceed(request)
-                if (!BuildConfig.DEBUG) {
-                    response
+                if (BuildConfig.DEBUG) {
+                    val buffer = Buffer()
+                    request.body()!!.writeTo(buffer)
+                    val source = response.body()!!.source()
+                    source.request(java.lang.Long.MAX_VALUE)
+                    DebugLog.d("Retrofit", "============================================================================")
+                    DebugLog.d("Retrofit-Info", request.method() + "-->" + request.url())
+                    DebugLog.d("Retrofit-Request", buffer.readUtf8())
+                    DebugLog.d("Retrofit-Response", source.buffer().clone().readUtf8())
+                    DebugLog.d("Retrofit", "============================================================================")
                 }
-                val buffer = Buffer()
-                request.body()!!.writeTo(buffer)
-                val source = response.body()!!.source()
-                source.request(java.lang.Long.MAX_VALUE)
-                DebugLog.d("Retrofit", "============================================================================")
-                DebugLog.d("Retrofit-Info", request.method() + "-->" + request.url())
-                DebugLog.d("Retrofit-Request", buffer.readUtf8())
-                DebugLog.d("Retrofit-Response", source.buffer().clone().readUtf8())
-                DebugLog.d("Retrofit", "============================================================================")
                 response
             }
 

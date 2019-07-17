@@ -11,6 +11,11 @@ class MainPresenter : BasePresenterImpl<MainContract.View>(), MainContract.Prese
 
     override fun testPresenter() {
         HttpUtil.getData(TestBody(), TestModel::class.java)
-                .subscribe({}, {}).bindToDestroy(this)
+                .subscribe({
+
+                }, {
+
+                })
+                .bindToDestroy(this)
     }
 }
