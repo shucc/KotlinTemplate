@@ -1,6 +1,6 @@
 package org.cchao.kotlintemplate.http
 
-import android.util.Log
+import android.text.TextUtils
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okio.Buffer
@@ -10,8 +10,6 @@ import org.cchao.kotlintemplate.util.DebugLog
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.AssertionError
-import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 /**
@@ -29,31 +27,65 @@ internal class RetrofitUtil private constructor() {
 
         private val RETROFIT: Retrofit
 
+        private const val CONNECT_TIMEOUT = "CONNECT_TIMEOUT"
+        private const val READ_TIMEOUT = "READ_TIMEOUT"
+        private const val WRITE_TIMEOUT = "WRITE_TIMEOUT"
+
         init {
 
             val okHttpBuild = OkHttpClient.Builder()
 
-            if (BuildConfig.DEBUG) {
-                okHttpBuild.interceptors().add(Interceptor { chain ->
-                    val request = chain.request()
-                    val response = chain.proceed(request)
-                    val buffer = Buffer()
-                    request.body()!!.writeTo(buffer)
-                    val source = response.body()!!.source()
-                    source.request(java.lang.Long.MAX_VALUE)
-                    DebugLog.d("Retrofit", request.method() + "-->" + request.url())
-                    DebugLog.d("Retrofit-Request", buffer.readUtf8())
-                    DebugLog.d("Retrofit-Response", source.buffer().clone().readUtf8())
+            val interceptor = Interceptor { chain ->
+                val request = chain.request()
+
+                //动态修改连接超时，写入超时以及读取超时时间,在headers中设置
+                var connectTimeout = chain.connectTimeoutMillis()
+                var readTimeout = chain.readTimeoutMillis()
+                var writeTimeout = chain.writeTimeoutMillis()
+                val connectNew = request.header(CONNECT_TIMEOUT)
+                val readNew = request.header(READ_TIMEOUT)
+                val writeNew = request.header(WRITE_TIMEOUT)
+
+                if (!TextUtils.isEmpty(connectNew)) {
+                    connectTimeout = Integer.valueOf(connectNew!!)
+                }
+                if (!TextUtils.isEmpty(readNew)) {
+                    readTimeout = Integer.valueOf(readNew!!)
+                }
+                if (!TextUtils.isEmpty(writeNew)) {
+                    writeTimeout = Integer.valueOf(writeNew!!)
+                }
+
+                val response = chain
+                        .withConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
+                        .withReadTimeout(readTimeout, TimeUnit.MILLISECONDS)
+                        .withWriteTimeout(writeTimeout, TimeUnit.MILLISECONDS)
+                        .proceed(request)
+                if (!BuildConfig.DEBUG) {
                     response
-                })
+                }
+                val buffer = Buffer()
+                request.body()!!.writeTo(buffer)
+                val source = response.body()!!.source()
+                source.request(java.lang.Long.MAX_VALUE)
+                DebugLog.d("Retrofit", "============================================================================")
+                DebugLog.d("Retrofit-Info", request.method() + "-->" + request.url())
+                DebugLog.d("Retrofit-Request", buffer.readUtf8())
+                DebugLog.d("Retrofit-Response", source.buffer().clone().readUtf8())
+                DebugLog.d("Retrofit", "============================================================================")
+                response
+            }
+
+            if (BuildConfig.DEBUG) {
                 try {
                     val cls = Class.forName("com.facebook.stetho.okhttp3.StethoInterceptor")
                     okHttpBuild.addNetworkInterceptor(cls.newInstance() as Interceptor)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
             }
+
+            okHttpBuild.addInterceptor(interceptor)
 
             val client = okHttpBuild.readTimeout(20, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
