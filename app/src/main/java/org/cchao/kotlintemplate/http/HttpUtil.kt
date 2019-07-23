@@ -28,8 +28,26 @@ object HttpUtil {
     }
 
     /**
-     * 返回数据类型为T
+     * 直接取缓存数据
      */
+    fun <T> getDataCache(httpRequestBody: HttpRequestBody, classType: Class<T>): Observable<T> {
+        return Observable.just(JsonUtil.toString(httpRequestBody).md5())
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    val cacheModel = App.getInstance().getDaoSession().cacheModelDao.queryBuilder().where(CacheModelDao.Properties.Key.eq(it)).unique()
+                    if (null == cacheModel) {
+                        Observable.just("")
+                    } else {
+                        val response = JsonUtil.toObject(cacheModel.content, HttpResponseBody::class.java)
+                        flatResponse(response)
+                    }
+                }
+                .map {
+                    val temp = JsonUtil.toString(it)
+                    if (TextUtils.isEmpty(temp)) null else JsonUtil.toObject(temp, classType)
+                }
+    }
+
     fun <T> getData(httpRequestBody: HttpRequestBody, classType: Class<T>): Observable<T> {
         return getData(httpRequestBody, classType, false)
     }
@@ -39,7 +57,7 @@ object HttpUtil {
         when (isCache && !App.getInstance().isConnected()) {
             true -> {
                 //TODO 没网络且需要使用缓存，在此处理
-                observable = Observable.just(JsonUtil.toString(httpRequestBody))
+                observable = Observable.just(JsonUtil.toString(httpRequestBody).md5())
                         .observeOn(Schedulers.io())
                         .flatMap {
                             val cacheModel = App.getInstance().getDaoSession().cacheModelDao.queryBuilder().where(CacheModelDao.Properties.Key.eq(it)).unique()
@@ -72,7 +90,7 @@ object HttpUtil {
                 .observeOn(Schedulers.io())
                 .doOnNext {
                     //TODO 需要保存缓存
-                    if (isCache) {
+                    if (isCache && it.isSuccess) {
                         val key = JsonUtil.toString(httpRequestBody).md5()
                         var cacheModel = App.getInstance().getDaoSession().cacheModelDao.queryBuilder().where(CacheModelDao.Properties.Key.eq(it)).unique()
                         if (null == cacheModel) {
