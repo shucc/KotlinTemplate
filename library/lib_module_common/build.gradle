@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion PROJECT_BUILD.compileVersion
+    defaultConfig {
+        minSdkVersion PROJECT_BUILD.minSdkVersion
+        targetSdkVersion PROJECT_BUILD.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        preview {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation otherDependencies.fastJson
+    implementation otherDependencies.gson
+}

@@ -1,6 +1,6 @@
 package org.cchao.kotlintemplate.expansion
 
-import org.cchao.kotlintemplate.util.Md5Util
+import org.cchao.common.utils.Md5Utils
 
 /**
  * @author cchen6
@@ -8,5 +8,5 @@ import org.cchao.kotlintemplate.util.Md5Util
  * @Description
  */
 fun String.md5(): String {
-    return Md5Util.getMd5(this)
+    return Md5Utils.getMd5(this)
 }

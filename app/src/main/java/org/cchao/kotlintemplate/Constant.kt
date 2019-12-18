@@ -7,5 +7,5 @@ package org.cchao.kotlintemplate
  */
 object Constant {
 
-    const val BASE_URL = ""
+
 }

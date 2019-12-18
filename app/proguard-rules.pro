@@ -24,13 +24,6 @@
 -dontwarn com.squareup.okhttp.**
 -dontwarn okio.**
 
-#otto
--keepattributes *Annotation*
--keepclassmembers class ** {
-    @com.squareup.otto.Subscribe public *;
-    @com.squareup.otto.Produce public *;
-}
-
 #Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
@@ -67,13 +60,26 @@
 }
 -keep class **$Properties
 
--keep class com.xunao.cssc.model.** {*;}
--keep class com.xunao.cssc.http.body.** {*;}
--keepclasseswithmembers class com.xunao.cssc.http.HttpResponseBody {
+#Gson
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn sun.misc.**
+-keep class com.google.gson.examples.android.model.** { <fields>; }
+-keep class * implements com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+#Keep model class
+-keep class org.cchao.kotlintemplate.model.** {*;}
+-keepclasseswithmembers class org.cchao.http.HttpResponseBody {
    <fields>;
    <methods>;
 }
--keepclasseswithmembers class com.xunao.cssc.http.HttpRequestBody {
+-keepclasseswithmembers class org.cchao.http.HttpRequestBody {
    <fields>;
    <methods>;
 }

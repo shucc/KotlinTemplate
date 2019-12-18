@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.41'
+    ext.kotlin_version = '1.3.50'
     repositories {
         google()
         jcenter()
         mavenCentral() // add repository
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
     }
@@ -18,7 +18,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
@@ -26,10 +25,48 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+String buildDependency(String pack, String dependency, String version) {
+    return "${pack}:${dependency}:${version}"
+}
+
 ext {
-    compileVersion = 29
-    buildToolsVersion = "29.0.0"
-    minSdk = 17
-    targetSdk = 29
+    PROJECT_BUILD = [
+            compileVersion  : 29,
+            minSdkVersion   : 17,
+            targetSdkVersion: 29,
+            versionCode     : 1,
+            versionName     : "0.0.1"
+    ]
+    BUILD = PROJECT_BUILD
     retrofitVersion = '2.5.0'
+    retrofitPackage = 'com.squareup.retrofit2'
+    daggerVersion = '2.23.1'
+    daggerPackage = 'com.google.dagger'
+    glideVersion = '4.10.0'
+    glidePackage = 'com.github.bumptech.glide'
+
+    androidxDependencies = [
+            appcompat       : 'androidx.appcompat:appcompat:1.1.0',
+            coreKtx         : 'androidx.core:core-ktx:1.1.0',
+            constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.3'
+    ]
+    httpDependencies = [
+            retrofitConverterGson : buildDependency(retrofitPackage, 'converter-gson', retrofitVersion),
+            retrofit2AdapterRxjava: buildDependency(retrofitPackage, 'adapter-rxjava2', retrofitVersion),
+            rxjava2               : 'io.reactivex.rxjava2:rxjava:2.2.8',
+            rxandroid             : 'io.reactivex.rxjava2:rxandroid:2.1.1',
+            stetho                : 'com.facebook.stetho:stetho:1.5.1',
+            stethoOkhttp          : 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+    ]
+    dbDependencies = [
+            greendao: buildDependency("org.greenrobot", "greendao", "3.2.2"),
+    ]
+    otherDependencies = [
+            dagger       : buildDependency(daggerPackage, 'dagger', daggerVersion),
+            daggerCompile: buildDependency(daggerPackage, 'dagger-compiler', daggerVersion),
+            glide        : buildDependency(glidePackage, 'glide', glideVersion),
+            glideCompile : buildDependency(glidePackage, 'compiler', glideVersion),
+            gson         : 'com.google.code.gson:gson:2.8.6',
+            fastJson     : 'com.alibaba:fastjson:1.1.71.android'
+    ]
 }

@@ -1,1 +1,7 @@
-include ':app', ':lib_module_http', ':lib_module_common'
+include ':app'
+
+include ':lib_module_common'
+project(':lib_module_common').projectDir = new File('library/lib_module_common')
+
+include ':lib_module_http'
+project(':lib_module_http').projectDir = new File('library/lib_module_http')
