@@ -21,6 +21,20 @@
 #-renamesourcefileattribute SourceFile
 -repackageclasses
 
+#保持使用keep注解的类不被混淆
+-keep class android.support.annotation.Keep
+-keep @android.support.annotation.Keep class *
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
+}
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <fields>;
+}
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
+
+
 -dontwarn com.squareup.okhttp.**
 -dontwarn okio.**
 
@@ -75,11 +89,3 @@
 
 #Keep model class
 -keep class org.cchao.kotlintemplate.model.** {*;}
--keepclasseswithmembers class org.cchao.http.HttpResponseBody {
-   <fields>;
-   <methods>;
-}
--keepclasseswithmembers class org.cchao.http.HttpRequestBody {
-   <fields>;
-   <methods>;
-}

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.view_toast.view.*
+import org.cchao.common.utils.NetworkUtils
 import org.cchao.kotlintemplate.R
 
 /**
@@ -34,9 +35,7 @@ fun Context.showToast(content: String?) {
  * 判断网络连接
  */
 fun Context.isConnected(): Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo = cm.activeNetworkInfo
-    return null != networkInfo && networkInfo.isAvailable
+    return NetworkUtils.isConnected()
 }
 
 /**

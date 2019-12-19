@@ -18,6 +18,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -25,7 +26,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-String buildDependency(String pack, String dependency, String version) {
+static String buildDependency(String pack, String dependency, String version) {
     return "${pack}:${dependency}:${version}"
 }
 
@@ -48,7 +49,8 @@ ext {
     androidxDependencies = [
             appcompat       : 'androidx.appcompat:appcompat:1.1.0',
             coreKtx         : 'androidx.core:core-ktx:1.1.0',
-            constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.3'
+            constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.3',
+            recyclerview    : 'androidx.recyclerview:recyclerview:1.1.0'
     ]
     httpDependencies = [
             retrofitConverterGson : buildDependency(retrofitPackage, 'converter-gson', retrofitVersion),
@@ -67,6 +69,8 @@ ext {
             glide        : buildDependency(glidePackage, 'glide', glideVersion),
             glideCompile : buildDependency(glidePackage, 'compiler', glideVersion),
             gson         : 'com.google.code.gson:gson:2.8.6',
-            fastJson     : 'com.alibaba:fastjson:1.1.71.android'
+            fastJson     : 'com.alibaba:fastjson:1.1.71.android',
+            eventbus     : 'org.greenrobot:eventbus:3.1.1',
+            rxpermission : 'com.github.tbruyelle:rxpermissions:0.10.2'
     ]
 }

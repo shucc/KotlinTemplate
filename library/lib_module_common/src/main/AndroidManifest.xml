@@ -1,1 +1,6 @@
-<manifest package="org.cchao.common" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.cchao.common">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+</manifest>

@@ -24,11 +24,11 @@ public interface Api {
 
     @FormUrlEncoded
     @POST
-    Observable<HttpResponseModel<Object>> postData(@Url String url, @HeaderMap HashMap<String, Long> headMap, @FieldMap Map<String, Object> fieldMap);
+    Observable<HttpResponseModel<Object>> postData(@Url String url, @HeaderMap HashMap<String, Object> headMap, @FieldMap Map<String, Object> fieldMap);
 
     @POST
-    Observable<HttpResponseModel<Object>> postBodyData(@Url String url, @HeaderMap HashMap<String, Long> headMap, @Body HttpRequestBody httpRequestBody);
+    Observable<HttpResponseModel<Object>> postBodyData(@Url String url, @HeaderMap HashMap<String, Object> headMap, @Body HttpRequestBody httpRequestBody);
 
     @GET
-    Observable<HttpResponseModel<Object>> getData(@Url String url, @HeaderMap HashMap<String, Long> headMap);
+    Observable<HttpResponseModel<Object>> getData(@Url String url, @HeaderMap HashMap<String, Object> headMap);
 }

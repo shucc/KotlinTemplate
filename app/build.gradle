@@ -28,6 +28,7 @@ dependencies {
     implementation androidxDependencies.appcompat
     implementation androidxDependencies.coreKtx
     implementation androidxDependencies.constraintlayout
+    implementation androidxDependencies.recyclerview
     //RxJava
     implementation httpDependencies.rxandroid
     implementation httpDependencies.rxjava2
@@ -38,6 +39,8 @@ dependencies {
     implementation otherDependencies.glide
     kapt otherDependencies.glideCompile
     implementation dbDependencies.greendao
+    implementation otherDependencies.eventbus
+    implementation otherDependencies.rxpermission
     implementation project(':lib_module_common')
     implementation project(':lib_module_http')
 }

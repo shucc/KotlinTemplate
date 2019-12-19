@@ -1,12 +1,18 @@
 package org.cchao.http;
 
+import androidx.annotation.Keep;
+
 import com.alibaba.fastjson.annotation.JSONField;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author cchen6
  * @Date on 2019/8/2
  * @Description
  */
+@Keep
 public abstract class HttpRequestBody {
 
     @JSONField(serialize = false)
@@ -31,7 +37,10 @@ public abstract class HttpRequestBody {
     private Long cookieNetWorkTime;
 
     @JSONField(serialize = false)
-    private Long cookieNoNetWorkTim;
+    private Long cookieNoNetWorkTime;
+
+    @JSONField(serialize = false)
+    private Map<String, Object> customHeader;
 
     public Long getConnectTime() {
         return (long) (10 * 1000);
@@ -61,8 +70,12 @@ public abstract class HttpRequestBody {
         return (long) (24 * 60 * 60 * 30);
     }
 
-    public Long getCookieNoNetWorkTim() {
+    public Long getCookieNoNetWorkTime() {
         return (long) (24 * 60 * 60 * 30);
+    }
+
+    public Map<String, Object> getCustomHeader() {
+        return new HashMap<>();
     }
 
     @JSONField(serialize = false)

@@ -27,4 +27,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation otherDependencies.fastJson
     implementation otherDependencies.gson
+    implementation httpDependencies.stetho
+    implementation httpDependencies.stethoOkhttp
 }

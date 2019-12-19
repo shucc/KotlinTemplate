@@ -13,6 +13,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okio.Buffer;
 import okio.BufferedSource;
 import retrofit2.Retrofit;
@@ -26,6 +27,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 class RetrofitUtils {
 
     private static final Retrofit RETROFIT;
+    private static final String CONNECT_TIMEOUT = "CONNECT_TIMEOUT";
+    private static final String READ_TIMEOUT = "READ_TIMEOUT";
+    private static final String WRITE_TIMEOUT = "WRITE_TIMEOUT";
 
     static {
 
@@ -35,13 +39,12 @@ class RetrofitUtils {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
-
                 int connectTimeout = chain.connectTimeoutMillis();
                 int readTimeout = chain.readTimeoutMillis();
                 int writeTimeout = chain.writeTimeoutMillis();
-                String connectTimeoutNew = request.header("CONNECT_TIMEOUT");
-                String readTimeoutNew = request.header("READ_TIMEOUT");
-                String writeTimeoutNew = request.header("WRITE_TIMEOUT");
+                String connectTimeoutNew = request.header(CONNECT_TIMEOUT);
+                String readTimeoutNew = request.header(READ_TIMEOUT);
+                String writeTimeoutNew = request.header(WRITE_TIMEOUT);
                 if (!TextUtils.isEmpty(connectTimeoutNew)) {
                     connectTimeout = Integer.valueOf(connectTimeoutNew);
                 }
@@ -51,6 +54,12 @@ class RetrofitUtils {
                 if (!TextUtils.isEmpty(writeTimeoutNew)) {
                     writeTimeout = Integer.valueOf(writeTimeoutNew);
                 }
+                request = chain.request()
+                        .newBuilder()
+                        .removeHeader(CONNECT_TIMEOUT)
+                        .removeHeader(WRITE_TIMEOUT)
+                        .removeHeader(READ_TIMEOUT)
+                        .build();
                 Response response = chain
                         .withConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
                         .withReadTimeout(readTimeout, TimeUnit.MILLISECONDS)
@@ -59,9 +68,10 @@ class RetrofitUtils {
                 if (IApplication.getInstance().isDebug()) {
                     Buffer buffer = new Buffer();
                     BufferedSource source = null;
-                    if (null != request.body()) {
+                    ResponseBody responseBody = response.body();
+                    if (null != request.body() && null != responseBody) {
                         request.body().writeTo(buffer);
-                        source = response.body().source();
+                        source = responseBody.source();
                         source.request(Integer.MAX_VALUE);
                     }
                     L.d("Retrofit", "=========================================================================================");
