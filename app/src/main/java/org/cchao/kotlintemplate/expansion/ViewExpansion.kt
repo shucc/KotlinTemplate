@@ -1,7 +1,6 @@
 package org.cchao.kotlintemplate.expansion
 
 import android.view.View
-import android.widget.Toast
 
 /**
  * @author cchen6

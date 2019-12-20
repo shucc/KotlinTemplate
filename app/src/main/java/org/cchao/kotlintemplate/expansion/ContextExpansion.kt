@@ -37,20 +37,6 @@ fun Context.isConnected(): Boolean {
 }
 
 /**
- * 获取屏幕高度
- */
-fun Context.getScreenHeight(): Int {
-    return ScreenUtils.height(this).px
-}
-
-/**
- * 获取屏幕宽度
- */
-fun Context.getScreenWidth(): Int {
-    return ScreenUtils.width(this).px
-}
-
-/**
  * 获取顶部状态栏高度
  */
 fun Context.getStatusHeight(): Int {

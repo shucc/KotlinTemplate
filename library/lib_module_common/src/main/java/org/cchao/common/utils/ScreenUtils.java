@@ -23,8 +23,8 @@ public class ScreenUtils {
     /**
      * 获取屏幕
      */
-    private static Display getDisplay(Context context) {
-        return ((Activity) context).getWindowManager().getDefaultDisplay();
+    private static Display getDisplay(Activity activity) {
+        return activity.getWindowManager().getDefaultDisplay();
     }
 
     public static int dipToPx(Context context, float dpValue) {
@@ -35,18 +35,18 @@ public class ScreenUtils {
     /**
      * 屏幕宽度
      */
-    public static Data width(Context context) {
+    public static Data width(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
-        getDisplay(context).getMetrics(dm);
+        getDisplay(activity).getMetrics(dm);
         return new Data(dm.widthPixels, dm.density);
     }
 
     /**
      * 屏幕高度
      */
-    public static Data height(Context context) {
+    public static Data height(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
-        getDisplay(context).getMetrics(dm);
+        getDisplay(activity).getMetrics(dm);
         return new Data(dm.heightPixels, dm.density);
     }
 
