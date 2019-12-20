@@ -1,15 +1,13 @@
 package org.cchao.kotlintemplate.expansion
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.text.TextUtils
-import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.WindowManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.view_toast.view.*
 import org.cchao.common.utils.NetworkUtils
+import org.cchao.common.utils.ScreenUtils
 import org.cchao.kotlintemplate.R
 
 /**
@@ -41,31 +39,20 @@ fun Context.isConnected(): Boolean {
 /**
  * 获取屏幕高度
  */
-fun Context.getScreenHeight(): ScreenData {
-    val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    val dm = DisplayMetrics()
-    wm.defaultDisplay.getMetrics(dm)
-    return ScreenData(dm.heightPixels, dm.density)
+fun Context.getScreenHeight(): Int {
+    return ScreenUtils.height(this).px
 }
 
 /**
  * 获取屏幕宽度
  */
-fun Context.getScreenWidth(): ScreenData {
-    val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    val dm = DisplayMetrics()
-    wm.defaultDisplay.getMetrics(dm)
-    return ScreenData(dm.widthPixels, dm.density)
+fun Context.getScreenWidth(): Int {
+    return ScreenUtils.width(this).px
 }
 
 /**
  * 获取顶部状态栏高度
  */
 fun Context.getStatusHeight(): Int {
-    var statusBarHeight = 0
-    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-    if (resourceId > 0) {
-        statusBarHeight = resources.getDimensionPixelSize(resourceId)
-    }
-    return statusBarHeight
+    return ScreenUtils.getStatusBarHeight(this)
 }

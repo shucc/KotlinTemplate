@@ -1,6 +1,6 @@
 package org.cchao.http;
 
-import org.cchao.common.utils.GsonUtils;
+import org.cchao.common.utils.JsonUtils;
 import org.cchao.common.utils.Md5Utils;
 import org.cchao.http.db.CacheDbUtils;
 import org.cchao.http.db.CacheModel;
@@ -28,14 +28,14 @@ public class CacheConsumer implements Consumer<HttpResponseModel<Object>> {
         if (!isCache || null == objectHttpResponseModel || !objectHttpResponseModel.isSuccess()) {
             return;
         }
-        String key = Md5Utils.getMd5(GsonUtils.toString(httpRequestBody));
+        String key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody));
         CacheModel cacheModel = CacheDbUtils.getInstance().queryCacheModel(key);
         if (null == cacheModel) {
-            cacheModel = new CacheModel(key, GsonUtils.toString(objectHttpResponseModel.getData()), objectHttpResponseModel.getCode(), objectHttpResponseModel.getMsg(), System.currentTimeMillis());
+            cacheModel = new CacheModel(key, JsonUtils.toString(objectHttpResponseModel.getData()), objectHttpResponseModel.getCode(), objectHttpResponseModel.getMsg(), System.currentTimeMillis());
             CacheDbUtils.getInstance().saveCache(cacheModel);
         } else {
             cacheModel.setTime(System.currentTimeMillis());
-            cacheModel.setContent(GsonUtils.toString(objectHttpResponseModel.getData()));
+            cacheModel.setContent(JsonUtils.toString(objectHttpResponseModel.getData()));
             cacheModel.setCode(objectHttpResponseModel.getCode());
             cacheModel.setMsg(objectHttpResponseModel.getMsg());
         }

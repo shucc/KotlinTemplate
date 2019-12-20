@@ -12,13 +12,13 @@ import java.util.List;
  * @Date on 2019/8/2
  * @Description
  */
-public class GsonUtils {
+public class JsonUtils {
 
     private static Gson gson = new Gson();
 
     private static GsonBuilder gb = new GsonBuilder();
 
-    private GsonUtils() {
+    private JsonUtils() {
     }
 
     public static String toString(Object object) {
@@ -26,7 +26,7 @@ public class GsonUtils {
         return gb.create().toJson(object);
     }
 
-    public static <T> T toObject(String json, Class<T> classOfT) {
+    public static <T> T fromJson(String json, Class<T> classOfT) {
         return gson.fromJson(json, classOfT);
     }
 
