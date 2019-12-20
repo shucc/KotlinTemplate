@@ -12,7 +12,8 @@ import java.util.Map;
  */
 public class FastJsonUtils {
 
-    private FastJsonUtils() {}
+    private FastJsonUtils() {
+    }
 
     public static String toString(Object object) {
         return JSON.toJSONString(object);

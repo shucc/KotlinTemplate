@@ -31,7 +31,6 @@ public class HttpUtils {
     private static Api api;
 
     private HttpUtils() {
-
     }
 
     private static Api getApi() {
@@ -65,27 +64,41 @@ public class HttpUtils {
         return getBaseDataList(httpRequestBody, classType, false);
     }
 
-    public static <T> Observable<T> getData(HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
+    public static <T> Observable<T> getData(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
                 .map(new Function<HttpResponseModel<Object>, T>() {
                     @Override
                     public T apply(HttpResponseModel<Object> objectHttpResponseModel) throws Exception {
-                        return JsonUtils.fromJson(JsonUtils.toString(objectHttpResponseModel.getData()), classType);
+                        return JsonUtils.fromJson(String.valueOf(objectHttpResponseModel.getData()), classType);
+                    }
+                })
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends T>>() {
+                    @Override
+                    public ObservableSource<? extends T> apply(Throwable throwable) throws Exception {
+                        deleteCache(httpRequestBody);
+                        return Observable.error(throwable);
                     }
                 });
     }
 
-    public static <T> Observable<List<T>> getDataList(HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
+    public static <T> Observable<List<T>> getDataList(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
                 .map(new Function<HttpResponseModel<Object>, List<T>>() {
                     @Override
                     public List<T> apply(HttpResponseModel<Object> objectHttpResponseModel) throws Exception {
-                        return JsonUtils.toList(JsonUtils.toString(objectHttpResponseModel.getData()), classType);
+                        return JsonUtils.toList(String.valueOf(objectHttpResponseModel.getData()), classType);
+                    }
+                })
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends List<T>>>() {
+                    @Override
+                    public ObservableSource<? extends List<T>> apply(Throwable throwable) throws Exception {
+                        deleteCache(httpRequestBody);
+                        return Observable.error(throwable);
                     }
                 });
     }
 
-    public static <T> Observable<HttpResponseModel<T>> getBaseData(HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
+    public static <T> Observable<HttpResponseModel<T>> getBaseData(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
                 .map(new Function<HttpResponseModel<Object>, HttpResponseModel<T>>() {
                     @Override
@@ -93,13 +106,20 @@ public class HttpUtils {
                         HttpResponseModel<T> responseModel = new HttpResponseModel<>();
                         responseModel.setMsg(objectHttpResponseModel.getMsg());
                         responseModel.setCode(objectHttpResponseModel.getCode());
-                        responseModel.setData(JsonUtils.fromJson(JsonUtils.toString(objectHttpResponseModel.getData()), classType));
+                        responseModel.setData(JsonUtils.fromJson(String.valueOf(objectHttpResponseModel.getData()), classType));
                         return responseModel;
+                    }
+                })
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends HttpResponseModel<T>>>() {
+                    @Override
+                    public ObservableSource<? extends HttpResponseModel<T>> apply(Throwable throwable) throws Exception {
+                        deleteCache(httpRequestBody);
+                        return Observable.error(throwable);
                     }
                 });
     }
 
-    public static <T> Observable<HttpResponseModel<List<T>>> getBaseDataList(HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
+    public static <T> Observable<HttpResponseModel<List<T>>> getBaseDataList(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
                 .map(new Function<HttpResponseModel<Object>, HttpResponseModel<List<T>>>() {
                     @Override
@@ -110,7 +130,22 @@ public class HttpUtils {
                         responseModel.setData(JsonUtils.toList(JsonUtils.toString(objectHttpResponseModel.getData()), classType));
                         return responseModel;
                     }
+                })
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends HttpResponseModel<List<T>>>>() {
+                    @Override
+                    public ObservableSource<? extends HttpResponseModel<List<T>>> apply(Throwable throwable) throws Exception {
+                        deleteCache(httpRequestBody);
+                        return Observable.error(throwable);
+                    }
                 });
+    }
+
+    private static void deleteCache(HttpRequestBody httpRequestBody) {
+        String key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody));
+        CacheModel cacheModel = CacheDbUtils.getInstance().queryCacheModel(key);
+        if (null != cacheModel) {
+            CacheDbUtils.getInstance().deleteCache(cacheModel);
+        }
     }
 
     private static Observable<HttpResponseModel<Object>> processData(final HttpRequestBody httpRequestBody, final boolean isCache) {
@@ -150,20 +185,9 @@ public class HttpUtils {
                 });
         Observable<HttpResponseModel<Object>> cacheObservable = null;
         if (isCache) {
-            final CacheModel cacheModel = CacheDbUtils.getInstance().queryCacheModel(Md5Utils.getMd5(JsonUtils.toString(httpRequestBody)));
-            if (null != cacheModel && ((System.currentTimeMillis() - cacheModel.getTime()) / 1000) < httpRequestBody.getCookieNetWorkTime()) {
-                HttpResponseModel<Object> responseModel = new HttpResponseModel<>();
-                responseModel.setCode(cacheModel.getCode());
-                responseModel.setMsg(cacheModel.getMsg());
-                responseModel.setData(cacheModel.getContent());
-                cacheObservable = Observable.just(responseModel)
-                        .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends HttpResponseModel<Object>>>() {
-                            @Override
-                            public ObservableSource<? extends HttpResponseModel<Object>> apply(Throwable throwable) throws Exception {
-                                CacheDbUtils.getInstance().deleteCache(cacheModel);
-                                return Observable.error(throwable);
-                            }
-                        });
+            HttpResponseModel<Object> cacheData = getCacheResponse(httpRequestBody, new Throwable(""), isCache);
+            if (cacheData.getData() != null) {
+                cacheObservable = Observable.just(cacheData);
             }
         }
         return null == cacheObservable ? netWorkObservable : Observable.concat(cacheObservable, netWorkObservable);

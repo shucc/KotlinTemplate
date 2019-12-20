@@ -20,6 +20,9 @@ public class Md5Utils {
         }
     }
 
+    private Md5Utils() {
+    }
+
     public static String getMd5(String string) {
         byte[] bs = md5.digest(string.getBytes(Charset.forName("UTF-8")));
         StringBuilder sb = new StringBuilder(40);

@@ -12,7 +12,8 @@ import org.cchao.common.IApplication;
  */
 public class L {
 
-    private L() {}
+    private L() {
+    }
 
     public static void d(String tag, String content) {
         if (!IApplication.getInstance().isDebug()) {
