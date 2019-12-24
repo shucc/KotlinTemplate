@@ -1,22 +1,27 @@
 package org.cchao.kotlintemplate.ui.base
 
-import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import org.cchao.kotlintemplate.R
+import java.lang.IllegalStateException
 
-/**
- * @author cchen6
- * @Date on 2019/6/19
- * @Description
- */
-abstract class BaseDialog(context: Context) : Dialog(context, R.style.CustomDialog) {
+abstract class BaseDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(bindLayout())
-//        val dialogHeight = context.getScreenHeight() - context.getStatusHeight()
-//        window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, if (dialogHeight == 0) ViewGroup.LayoutParams.MATCH_PARENT else dialogHeight)
+        setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(bindLayout(), container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initData()
         bindEvent()
     }
@@ -26,4 +31,19 @@ abstract class BaseDialog(context: Context) : Dialog(context, R.style.CustomDial
     abstract fun initData()
 
     abstract fun bindEvent()
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        try {
+            super.show(manager, tag)
+        } catch (e: IllegalStateException) {
+
+        }
+    }
+
+    override fun dismiss() {
+        if (null == activity || activity!!.isFinishing) {
+            return
+        }
+        super.dismiss()
+    }
 }

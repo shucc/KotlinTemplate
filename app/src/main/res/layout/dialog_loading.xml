@@ -18,9 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="12dp"
-        android:layout_toRightOf="@+id/dialog_loading_progressbar"
-        android:paddingRight="48dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/dialog_loading_progressbar"
+        android:paddingStart="0dp"
+        android:paddingEnd="48dp"
         android:text="@string/loading_default"
         android:textColor="@android:color/white"
         android:textSize="16sp" />

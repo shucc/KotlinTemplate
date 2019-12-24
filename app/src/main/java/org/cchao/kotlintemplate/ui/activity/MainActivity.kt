@@ -1,8 +1,8 @@
 package org.cchao.kotlintemplate.ui.activity
 
+import android.content.Intent
 import kotlinx.android.synthetic.main.activity_main.*
 import org.cchao.kotlintemplate.R
-import org.cchao.kotlintemplate.expansion.showLoading
 import org.cchao.kotlintemplate.ui.activity.contract.MainContract
 import org.cchao.kotlintemplate.ui.activity.presenter.MainPresenter
 import org.cchao.kotlintemplate.ui.base.BaseMvpActivity
@@ -22,7 +22,13 @@ class MainActivity : BaseMvpActivity<MainContract.Presenter>(), MainContract.Vie
     }
 
     override fun bindEvent() {
-        text_test.setOnClickListener { showLoading() }
+        text_test.setOnClickListener {
+            showLoading()
+            startActivity(Intent(this, SecondActivity::class.java))
+        }
+        text_test2.setOnClickListener {
+
+        }
     }
 
     override fun testView() {

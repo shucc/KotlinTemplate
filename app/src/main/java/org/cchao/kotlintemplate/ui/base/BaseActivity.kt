@@ -2,10 +2,11 @@ package org.cchao.kotlintemplate.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import org.cchao.kotlintemplate.expansion.clearLoading
-import org.cchao.kotlintemplate.expansion.hideLoading
+import org.cchao.kotlintemplate.ui.dialog.LoadingDialog
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    private var loadingDialog: LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,9 +22,17 @@ abstract class BaseActivity : AppCompatActivity() {
 
     abstract fun bindEvent()
 
-    override fun onDestroy() {
-        hideLoading()
-        clearLoading()
-        super.onDestroy()
+    fun showLoading() {
+        showLoading(null)
+    }
+
+    fun showLoading(content: String?) {
+        loadingDialog = LoadingDialog.showLoading(supportFragmentManager, content)
+    }
+
+    fun hideLoading() {
+        if (null != loadingDialog) {
+            loadingDialog!!.dismiss()
+        }
     }
 }

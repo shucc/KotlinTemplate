@@ -1,5 +1,7 @@
 package org.cchao.kotlintemplate.ui.activity
 
+import kotlinx.android.synthetic.main.activity_main.*
+import org.cchao.kotlintemplate.R
 import org.cchao.kotlintemplate.ui.base.BaseActivity
 
 /**
@@ -10,14 +12,16 @@ import org.cchao.kotlintemplate.ui.base.BaseActivity
 class SecondActivity : BaseActivity() {
 
     override fun bindLayout(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return R.layout.activity_main
     }
 
     override fun initData() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun bindEvent() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        text_test.setOnClickListener {
+            showLoading("喝喝会...")
+        }
     }
 }

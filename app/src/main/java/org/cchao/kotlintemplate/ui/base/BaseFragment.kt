@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.cchao.kotlintemplate.ui.dialog.LoadingDialog
 
 /**
  * @author cchen6
@@ -12,6 +13,8 @@ import androidx.fragment.app.Fragment
  * @Description
  */
 abstract class BaseFragment : Fragment() {
+
+    private var loadingDialog: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = LayoutInflater.from(container!!.context).inflate(bindLayout(), container, false)
@@ -25,4 +28,18 @@ abstract class BaseFragment : Fragment() {
     abstract fun initData()
 
     abstract fun bindEvent()
+
+    fun showLoading() {
+        showLoading(null)
+    }
+
+    fun showLoading(content: String?) {
+        loadingDialog = LoadingDialog.showLoading(activity!!.supportFragmentManager, content)
+    }
+
+    fun hideLoading() {
+        if (null != loadingDialog) {
+            loadingDialog!!.dismiss()
+        }
+    }
 }
