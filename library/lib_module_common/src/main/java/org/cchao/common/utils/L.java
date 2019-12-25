@@ -12,7 +12,13 @@ import org.cchao.common.IApplication;
  */
 public class L {
 
+    private static final String TAG = "DebugLog";
+
     private L() {
+    }
+
+    public static void d(String content) {
+        d(TAG, content);
     }
 
     public static void d(String tag, String content) {
@@ -33,6 +39,10 @@ public class L {
                 Log.d(tag, content.substring(i, content.length()));
             }
         }
+    }
+
+    public static void e(String content) {
+        e(TAG, content);
     }
 
     public static void e(String tag, String content) {

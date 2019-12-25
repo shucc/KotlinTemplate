@@ -1,6 +1,5 @@
 package org.cchao.http;
 
-import org.cchao.common.utils.FastJsonUtils;
 import org.cchao.common.utils.JsonUtils;
 import org.cchao.common.utils.Md5Utils;
 import org.cchao.common.utils.NetworkUtils;
@@ -146,7 +145,7 @@ public class HttpUtils {
                 basicObservable = getApi().postBodyData(httpRequestBody.getUrl(), headerMap, httpRequestBody);
                 break;
             default:
-                basicObservable = getApi().postData(httpRequestBody.getUrl(), headerMap, FastJsonUtils.toMap(JsonUtils.toString(httpRequestBody)));
+                basicObservable = getApi().postData(httpRequestBody.getUrl(), headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)));
                 break;
         }
         Observable<HttpResponseModel<Object>> netWorkObservable = basicObservable

@@ -10,7 +10,7 @@ import org.cchao.kotlintemplate.ui.base.BasePresenterImpl
 class MainPresenter : BasePresenterImpl<MainContract.View>(), MainContract.Presenter {
 
     override fun testPresenter() {
-        HttpUtils.getData(TestBody(), TestModel::class.java)
+        HttpUtils.getData(TestBody("fdgdg"), TestModel::class.java)
                 .subscribe({
 
                 }, {

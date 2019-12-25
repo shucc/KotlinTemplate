@@ -26,10 +26,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation httpDependencies.stetho
     implementation httpDependencies.stethoOkhttp
-    implementation otherDependencies.fastJson
-    implementation otherDependencies.gson
     //retrofit
-    implementation httpDependencies.retrofitConverterGson
+    implementation httpDependencies.retrofitConverterJackson
     implementation httpDependencies.retrofit2AdapterRxjava
     //RxJava
     implementation httpDependencies.rxandroid

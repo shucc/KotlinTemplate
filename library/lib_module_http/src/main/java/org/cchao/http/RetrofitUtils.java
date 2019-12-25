@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import org.cchao.common.IApplication;
 import org.cchao.common.utils.L;
-import org.cchao.http.conventer.FastJsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +16,7 @@ import okio.Buffer;
 import okio.BufferedSource;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * @author cchen6
@@ -98,7 +98,7 @@ class RetrofitUtils {
         RETROFIT = new Retrofit.Builder()
                 .client(client)
                 .baseUrl("https://www.baidu.com/")
-                .addConverterFactory(FastJsonConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }

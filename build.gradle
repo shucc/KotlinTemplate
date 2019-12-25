@@ -53,12 +53,12 @@ ext {
             recyclerview    : 'androidx.recyclerview:recyclerview:1.1.0'
     ]
     httpDependencies = [
-            retrofitConverterGson : buildDependency(retrofitPackage, 'converter-gson', retrofitVersion),
-            retrofit2AdapterRxjava: buildDependency(retrofitPackage, 'adapter-rxjava2', retrofitVersion),
-            rxjava2               : 'io.reactivex.rxjava2:rxjava:2.2.8',
-            rxandroid             : 'io.reactivex.rxjava2:rxandroid:2.1.1',
-            stetho                : 'com.facebook.stetho:stetho:1.5.1',
-            stethoOkhttp          : 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+            retrofitConverterJackson: buildDependency(retrofitPackage, 'converter-jackson', retrofitVersion),
+            retrofit2AdapterRxjava  : buildDependency(retrofitPackage, 'adapter-rxjava2', retrofitVersion),
+            rxjava2                 : 'io.reactivex.rxjava2:rxjava:2.2.8',
+            rxandroid               : 'io.reactivex.rxjava2:rxandroid:2.1.1',
+            stetho                  : 'com.facebook.stetho:stetho:1.5.1',
+            stethoOkhttp            : 'com.facebook.stetho:stetho-okhttp3:1.5.1'
     ]
     dbDependencies = [
             greendao: buildDependency("org.greenrobot", "greendao", "3.2.2"),
@@ -68,8 +68,6 @@ ext {
             daggerCompile: buildDependency(daggerPackage, 'dagger-compiler', daggerVersion),
             glide        : buildDependency(glidePackage, 'glide', glideVersion),
             glideCompile : buildDependency(glidePackage, 'compiler', glideVersion),
-            gson         : 'com.google.code.gson:gson:2.8.6',
-            fastJson     : 'com.alibaba:fastjson:1.1.71.android',
             eventbus     : 'org.greenrobot:eventbus:3.1.1',
             rxpermission : 'com.github.tbruyelle:rxpermissions:0.10.2'
     ]

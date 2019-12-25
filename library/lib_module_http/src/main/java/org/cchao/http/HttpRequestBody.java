@@ -2,7 +2,7 @@ package org.cchao.http;
 
 import androidx.annotation.Keep;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,31 +15,31 @@ import java.util.Map;
 @Keep
 public abstract class HttpRequestBody {
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Long connectTime;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Long readTime;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Long writeTime;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Integer retryCount;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Long retryDelay;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Long retryIncreaseDelay;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Long cookieNetWorkTime;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Long cookieNoNetWorkTime;
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     private Map<String, Object> customHeader;
 
     public Long getConnectTime() {
@@ -78,10 +78,10 @@ public abstract class HttpRequestBody {
         return new HashMap<>();
     }
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     public abstract Method getMethod();
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     public abstract String getUrl();
 
     public enum Method {
