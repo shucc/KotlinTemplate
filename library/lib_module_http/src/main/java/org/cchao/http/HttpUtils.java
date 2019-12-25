@@ -14,11 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -64,78 +60,56 @@ public class HttpUtils {
         return getBaseDataList(httpRequestBody, classType, false);
     }
 
-    public static <T> Observable<T> getData(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
+    public static <T> Observable<T> getData(final HttpRequestBody httpRequestBody, final Class<T> classType, final boolean isCache) {
         return processData(httpRequestBody, isCache)
-                .map(new Function<HttpResponseModel<Object>, T>() {
-                    @Override
-                    public T apply(HttpResponseModel<Object> objectHttpResponseModel) throws Exception {
-                        return JsonUtils.fromJson(String.valueOf(objectHttpResponseModel.getData()), classType);
-                    }
-                })
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends T>>() {
-                    @Override
-                    public ObservableSource<? extends T> apply(Throwable throwable) throws Exception {
+                .flatMap(objectHttpResponseModel -> flatResponse(objectHttpResponseModel))
+                .map(o -> JsonUtils.fromJson(String.valueOf(o), classType))
+                .doOnError(throwable -> {
+                    if (isCache) {
                         deleteCache(httpRequestBody);
-                        return Observable.error(throwable);
                     }
                 });
     }
 
     public static <T> Observable<List<T>> getDataList(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
-                .map(new Function<HttpResponseModel<Object>, List<T>>() {
-                    @Override
-                    public List<T> apply(HttpResponseModel<Object> objectHttpResponseModel) throws Exception {
-                        return JsonUtils.toList(String.valueOf(objectHttpResponseModel.getData()), classType);
-                    }
-                })
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends List<T>>>() {
-                    @Override
-                    public ObservableSource<? extends List<T>> apply(Throwable throwable) throws Exception {
+                .flatMap(objectHttpResponseModel -> flatResponse(objectHttpResponseModel))
+                .map(o -> JsonUtils.toList(String.valueOf(o), classType))
+                .doOnError(throwable -> {
+                    if (isCache) {
                         deleteCache(httpRequestBody);
-                        return Observable.error(throwable);
                     }
                 });
     }
 
     public static <T> Observable<HttpResponseModel<T>> getBaseData(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
-                .map(new Function<HttpResponseModel<Object>, HttpResponseModel<T>>() {
-                    @Override
-                    public HttpResponseModel<T> apply(HttpResponseModel<Object> objectHttpResponseModel) throws Exception {
-                        HttpResponseModel<T> responseModel = new HttpResponseModel<>();
-                        responseModel.setMsg(objectHttpResponseModel.getMsg());
-                        responseModel.setCode(objectHttpResponseModel.getCode());
-                        responseModel.setData(JsonUtils.fromJson(String.valueOf(objectHttpResponseModel.getData()), classType));
-                        return responseModel;
-                    }
+                .map(objectHttpResponseModel -> {
+                    HttpResponseModel<T> responseModel = new HttpResponseModel<>();
+                    responseModel.setMsg(objectHttpResponseModel.getMsg());
+                    responseModel.setCode(objectHttpResponseModel.getCode());
+                    responseModel.setData(JsonUtils.fromJson(String.valueOf(objectHttpResponseModel.getData()), classType));
+                    return responseModel;
                 })
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends HttpResponseModel<T>>>() {
-                    @Override
-                    public ObservableSource<? extends HttpResponseModel<T>> apply(Throwable throwable) throws Exception {
+                .doOnError(throwable -> {
+                    if (isCache) {
                         deleteCache(httpRequestBody);
-                        return Observable.error(throwable);
                     }
                 });
     }
 
     public static <T> Observable<HttpResponseModel<List<T>>> getBaseDataList(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
-                .map(new Function<HttpResponseModel<Object>, HttpResponseModel<List<T>>>() {
-                    @Override
-                    public HttpResponseModel<List<T>> apply(HttpResponseModel<Object> objectHttpResponseModel) throws Exception {
-                        HttpResponseModel<List<T>> responseModel = new HttpResponseModel<>();
-                        responseModel.setMsg(objectHttpResponseModel.getMsg());
-                        responseModel.setCode(objectHttpResponseModel.getCode());
-                        responseModel.setData(JsonUtils.toList(JsonUtils.toString(objectHttpResponseModel.getData()), classType));
-                        return responseModel;
-                    }
+                .map(objectHttpResponseModel -> {
+                    HttpResponseModel<List<T>> responseModel = new HttpResponseModel<>();
+                    responseModel.setMsg(objectHttpResponseModel.getMsg());
+                    responseModel.setCode(objectHttpResponseModel.getCode());
+                    responseModel.setData(JsonUtils.toList(JsonUtils.toString(objectHttpResponseModel.getData()), classType));
+                    return responseModel;
                 })
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends HttpResponseModel<List<T>>>>() {
-                    @Override
-                    public ObservableSource<? extends HttpResponseModel<List<T>>> apply(Throwable throwable) throws Exception {
+                .doOnError(throwable -> {
+                    if (isCache) {
                         deleteCache(httpRequestBody);
-                        return Observable.error(throwable);
                     }
                 });
     }
@@ -150,7 +124,11 @@ public class HttpUtils {
 
     private static Observable<HttpResponseModel<Object>> processData(final HttpRequestBody httpRequestBody, final boolean isCache) {
         if (isCache && !NetworkUtils.isConnected()) {
-            return Observable.just(getCacheResponse(httpRequestBody, new ApiException(404, ""), isCache));
+            HttpResponseModel<Object> objectHttpResponseModel = getCacheResponse(httpRequestBody, new ApiException(404, ""), isCache);
+            if (null == objectHttpResponseModel.getData()) {
+                return Observable.error(new ApiException(HttpResponseModel.CODE_ERROR, ""));
+            }
+            return Observable.just(objectHttpResponseModel);
         }
         HashMap<String, Object> headerMap = new HashMap<>();
         headerMap.put("CONNECT_TIMEOUT", httpRequestBody.getConnectTime());
@@ -177,11 +155,12 @@ public class HttpUtils {
                 .observeOn(Schedulers.io())
                 .doOnNext(new CacheConsumer(httpRequestBody, isCache))
                 .observeOn(AndroidSchedulers.mainThread())
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends HttpResponseModel<Object>>>() {
-                    @Override
-                    public ObservableSource<? extends HttpResponseModel<Object>> apply(Throwable throwable) throws Exception {
-                        return Observable.just(getCacheResponse(httpRequestBody, throwable, isCache));
+                .onErrorResumeNext(throwable -> {
+                    HttpResponseModel<Object> objectHttpResponseModel = getCacheResponse(httpRequestBody, throwable, isCache);
+                    if (null == objectHttpResponseModel.getData()) {
+                        return Observable.error(new ApiException(HttpResponseModel.CODE_ERROR, throwable.getMessage()));
                     }
+                    return Observable.just(objectHttpResponseModel);
                 });
         Observable<HttpResponseModel<Object>> cacheObservable = null;
         if (isCache) {
@@ -205,7 +184,8 @@ public class HttpUtils {
             responseModel.setMsg(throwable.getMessage());
             return responseModel;
         }
-        if (((System.currentTimeMillis() - cacheModel.getTime()) / 1000) < httpRequestBody.getCookieNetWorkTime()) {
+        if ((NetworkUtils.isConnected() && ((System.currentTimeMillis() - cacheModel.getTime()) / 1000) < httpRequestBody.getCookieNetWorkTime())
+                || (!NetworkUtils.isConnected() && ((System.currentTimeMillis() - cacheModel.getTime()) / 1000) < httpRequestBody.getCookieNoNetWorkTime())) {
             responseModel.setCode(cacheModel.getCode());
             responseModel.setMsg(cacheModel.getMsg());
             responseModel.setData(cacheModel.getContent());
@@ -224,21 +204,18 @@ public class HttpUtils {
      * @return
      */
     private static <T> Observable<T> flatResponse(final HttpResponseModel<T> response) {
-        return Observable.create(new ObservableOnSubscribe<T>() {
-            @Override
-            public void subscribe(ObservableEmitter<T> emitter) throws Exception {
-                if (response.isSuccess()) {
-                    if (!emitter.isDisposed()) {
-                        emitter.onNext(response.getData());
-                    }
-                } else {
-                    if (!emitter.isDisposed()) {
-                        emitter.onError(new ApiException(response.getCode(), response.getMsg()));
-                    }
-                }
+        return Observable.create(emitter -> {
+            if (response.isSuccess()) {
                 if (!emitter.isDisposed()) {
-                    emitter.onComplete();
+                    emitter.onNext(response.getData());
                 }
+            } else {
+                if (!emitter.isDisposed()) {
+                    emitter.onError(new ApiException(response.getCode(), response.getMsg()));
+                }
+            }
+            if (!emitter.isDisposed()) {
+                emitter.onComplete();
             }
         });
     }

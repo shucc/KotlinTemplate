@@ -6,7 +6,6 @@ import org.cchao.common.IApplication;
 import org.cchao.common.utils.L;
 import org.cchao.http.conventer.FastJsonConverterFactory;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -35,55 +34,52 @@ class RetrofitUtils {
 
         OkHttpClient.Builder okHttpBuild = new OkHttpClient.Builder();
 
-        okHttpBuild.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                int connectTimeout = chain.connectTimeoutMillis();
-                int readTimeout = chain.readTimeoutMillis();
-                int writeTimeout = chain.writeTimeoutMillis();
-                String connectTimeoutNew = request.header(CONNECT_TIMEOUT);
-                String readTimeoutNew = request.header(READ_TIMEOUT);
-                String writeTimeoutNew = request.header(WRITE_TIMEOUT);
-                if (!TextUtils.isEmpty(connectTimeoutNew)) {
-                    connectTimeout = Integer.valueOf(connectTimeoutNew);
-                }
-                if (!TextUtils.isEmpty(readTimeoutNew)) {
-                    readTimeout = Integer.valueOf(readTimeoutNew);
-                }
-                if (!TextUtils.isEmpty(writeTimeoutNew)) {
-                    writeTimeout = Integer.valueOf(writeTimeoutNew);
-                }
-                request = chain.request()
-                        .newBuilder()
-                        .removeHeader(CONNECT_TIMEOUT)
-                        .removeHeader(WRITE_TIMEOUT)
-                        .removeHeader(READ_TIMEOUT)
-                        .build();
-                Response response = chain
-                        .withConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
-                        .withReadTimeout(readTimeout, TimeUnit.MILLISECONDS)
-                        .withWriteTimeout(writeTimeout, TimeUnit.MILLISECONDS)
-                        .proceed(request);
-                if (IApplication.getInstance().isDebug()) {
-                    Buffer buffer = new Buffer();
-                    BufferedSource source = null;
-                    ResponseBody responseBody = response.body();
-                    if (null != request.body() && null != responseBody) {
-                        request.body().writeTo(buffer);
-                        source = responseBody.source();
-                        source.request(Integer.MAX_VALUE);
-                    }
-                    L.d("Retrofit", "=========================================================================================");
-                    L.d("Retrofit", request.method() + "-->" + request.url());
-                    L.d("Retrofit", buffer.readUtf8());
-                    if (null != source) {
-                        L.d("Retrofit", source.buffer().clone().readUtf8());
-                    }
-                    L.d("Retrofit", "========================================================================================");
-                }
-                return response;
+        okHttpBuild.interceptors().add(chain -> {
+            Request request = chain.request();
+            int connectTimeout = chain.connectTimeoutMillis();
+            int readTimeout = chain.readTimeoutMillis();
+            int writeTimeout = chain.writeTimeoutMillis();
+            String connectTimeoutNew = request.header(CONNECT_TIMEOUT);
+            String readTimeoutNew = request.header(READ_TIMEOUT);
+            String writeTimeoutNew = request.header(WRITE_TIMEOUT);
+            if (!TextUtils.isEmpty(connectTimeoutNew)) {
+                connectTimeout = Integer.valueOf(connectTimeoutNew);
             }
+            if (!TextUtils.isEmpty(readTimeoutNew)) {
+                readTimeout = Integer.valueOf(readTimeoutNew);
+            }
+            if (!TextUtils.isEmpty(writeTimeoutNew)) {
+                writeTimeout = Integer.valueOf(writeTimeoutNew);
+            }
+            request = chain.request()
+                    .newBuilder()
+                    .removeHeader(CONNECT_TIMEOUT)
+                    .removeHeader(WRITE_TIMEOUT)
+                    .removeHeader(READ_TIMEOUT)
+                    .build();
+            Response response = chain
+                    .withConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
+                    .withReadTimeout(readTimeout, TimeUnit.MILLISECONDS)
+                    .withWriteTimeout(writeTimeout, TimeUnit.MILLISECONDS)
+                    .proceed(request);
+            if (IApplication.getInstance().isDebug()) {
+                Buffer buffer = new Buffer();
+                BufferedSource source = null;
+                ResponseBody responseBody = response.body();
+                if (null != request.body() && null != responseBody) {
+                    request.body().writeTo(buffer);
+                    source = responseBody.source();
+                    source.request(Integer.MAX_VALUE);
+                }
+                L.d("Retrofit", "=========================================================================================");
+                L.d("Retrofit", request.method() + "-->" + request.url());
+                L.d("Retrofit", buffer.readUtf8());
+                if (null != source) {
+                    L.d("Retrofit", source.buffer().clone().readUtf8());
+                }
+                L.d("Retrofit", "========================================================================================");
+            }
+            return response;
         });
         if (IApplication.getInstance().isDebug()) {
             try {

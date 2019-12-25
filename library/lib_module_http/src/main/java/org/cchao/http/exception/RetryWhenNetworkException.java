@@ -46,18 +46,15 @@ public class RetryWhenNetworkException implements Function<Observable<? extends 
                     public Wrapper apply(Throwable throwable, Integer integer) {
                         return new Wrapper(throwable, integer);
                     }
-                }).flatMap(new Function<Wrapper, Observable<?>>() {
-                    @Override
-                    public Observable<?> apply(Wrapper wrapper) {
-                        if ((wrapper.throwable instanceof ConnectException
-                                || wrapper.throwable instanceof SocketTimeoutException
-                                || wrapper.throwable instanceof TimeoutException)
-                                && wrapper.index < count + 1) {
-                            //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
-                            return Observable.timer(delay + (wrapper.index - 1) * increaseDelay, TimeUnit.MILLISECONDS);
-                        }
-                        return Observable.error(wrapper.throwable);
+                }).flatMap(wrapper -> {
+                    if ((wrapper.throwable instanceof ConnectException
+                            || wrapper.throwable instanceof SocketTimeoutException
+                            || wrapper.throwable instanceof TimeoutException)
+                            && wrapper.index < count + 1) {
+                        //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
+                        return Observable.timer(delay + (wrapper.index - 1) * increaseDelay, TimeUnit.MILLISECONDS);
                     }
+                    return Observable.error(wrapper.throwable);
                 });
     }
 
