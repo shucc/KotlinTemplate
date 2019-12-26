@@ -11,7 +11,6 @@ import androidx.annotation.Keep;
 public class HttpResponseModel<T> {
 
     public static final int CODE_ERROR = -1;
-    public static final int CODE_NOT_NETWORK = 404;
 
     private int code;
 

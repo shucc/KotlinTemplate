@@ -1,5 +1,6 @@
 package org.cchao.http;
 
+import org.cchao.common.IApplication;
 import org.cchao.common.utils.JsonUtils;
 import org.cchao.common.utils.Md5Utils;
 import org.cchao.common.utils.NetworkUtils;
@@ -61,7 +62,7 @@ public class HttpUtils {
 
     public static <T> Observable<T> getData(final HttpRequestBody httpRequestBody, final Class<T> classType, final boolean isCache) {
         return processData(httpRequestBody, isCache)
-                .flatMap(objectHttpResponseModel -> flatResponse(objectHttpResponseModel))
+                .flatMap(HttpUtils::flatResponse)
                 .map(o -> JsonUtils.fromJson(String.valueOf(o), classType))
                 .doOnError(throwable -> {
                     if (isCache) {
@@ -72,7 +73,7 @@ public class HttpUtils {
 
     public static <T> Observable<List<T>> getDataList(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
-                .flatMap(objectHttpResponseModel -> flatResponse(objectHttpResponseModel))
+                .flatMap(HttpUtils::flatResponse)
                 .map(o -> JsonUtils.toList(String.valueOf(o), classType))
                 .doOnError(throwable -> {
                     if (isCache) {
@@ -122,10 +123,14 @@ public class HttpUtils {
     }
 
     private static Observable<HttpResponseModel<Object>> processData(final HttpRequestBody httpRequestBody, final boolean isCache) {
-        if (isCache && !NetworkUtils.isConnected()) {
-            HttpResponseModel<Object> objectHttpResponseModel = getCacheResponse(httpRequestBody, new ApiException(404, ""), isCache);
+        if (!NetworkUtils.isConnected()) {
+            String toastStr = IApplication.getInstance().getResources().getString(R.string.no_internet_connection);
+            if (!isCache) {
+                return Observable.error(new ApiException(HttpResponseModel.CODE_ERROR, toastStr));
+            }
+            HttpResponseModel<Object> objectHttpResponseModel = getCacheResponse(httpRequestBody, new ApiException(HttpResponseModel.CODE_ERROR, toastStr), isCache);
             if (null == objectHttpResponseModel.getData()) {
-                return Observable.error(new ApiException(HttpResponseModel.CODE_ERROR, ""));
+                return Observable.error(new ApiException(HttpResponseModel.CODE_ERROR, toastStr));
             }
             return Observable.just(objectHttpResponseModel);
         }
