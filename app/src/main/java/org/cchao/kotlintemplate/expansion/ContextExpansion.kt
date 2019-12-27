@@ -18,7 +18,7 @@ fun Context.showToast(content: String?) {
         return
     }
     if (System.currentTimeMillis() - ExpansionObject.showToastTime > 1000) {
-        val view = LayoutInflater.from(this).inflate(R.layout.view_toast, null);
+        val view = LayoutInflater.from(this).inflate(R.layout.view_toast, null)
         view.txt_content.text = content
         val toast = Toast(this)
         toast.setGravity(Gravity.CENTER, 0, 0)
@@ -34,11 +34,4 @@ fun Context.showToast(content: String?) {
  */
 fun Context.isConnected(): Boolean {
     return NetworkUtils.isConnected()
-}
-
-/**
- * 获取顶部状态栏高度
- */
-fun Context.getStatusHeight(): Int {
-    return ScreenUtils.getStatusBarHeight(this)
 }

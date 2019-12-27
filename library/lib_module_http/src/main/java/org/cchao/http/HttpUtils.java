@@ -64,22 +64,14 @@ public class HttpUtils {
         return processData(httpRequestBody, isCache)
                 .flatMap(HttpUtils::flatResponse)
                 .map(o -> JsonUtils.fromJson(String.valueOf(o), classType))
-                .doOnError(throwable -> {
-                    if (isCache) {
-                        deleteCache(httpRequestBody);
-                    }
-                });
+                .doOnError(new DeleteCacheConsumer(httpRequestBody, isCache));
     }
 
     public static <T> Observable<List<T>> getDataList(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
         return processData(httpRequestBody, isCache)
                 .flatMap(HttpUtils::flatResponse)
                 .map(o -> JsonUtils.toList(String.valueOf(o), classType))
-                .doOnError(throwable -> {
-                    if (isCache) {
-                        deleteCache(httpRequestBody);
-                    }
-                });
+                .doOnError(new DeleteCacheConsumer(httpRequestBody, isCache));
     }
 
     public static <T> Observable<HttpResponseModel<T>> getBaseData(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
@@ -91,11 +83,7 @@ public class HttpUtils {
                     responseModel.setData(JsonUtils.fromJson(String.valueOf(objectHttpResponseModel.getData()), classType));
                     return responseModel;
                 })
-                .doOnError(throwable -> {
-                    if (isCache) {
-                        deleteCache(httpRequestBody);
-                    }
-                });
+                .doOnError(new DeleteCacheConsumer(httpRequestBody, isCache));
     }
 
     public static <T> Observable<HttpResponseModel<List<T>>> getBaseDataList(final HttpRequestBody httpRequestBody, final Class<T> classType, boolean isCache) {
@@ -107,22 +95,11 @@ public class HttpUtils {
                     responseModel.setData(JsonUtils.toList(JsonUtils.toString(objectHttpResponseModel.getData()), classType));
                     return responseModel;
                 })
-                .doOnError(throwable -> {
-                    if (isCache) {
-                        deleteCache(httpRequestBody);
-                    }
-                });
-    }
-
-    private static void deleteCache(HttpRequestBody httpRequestBody) {
-        String key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody));
-        CacheModel cacheModel = CacheDbUtils.getInstance().queryCacheModel(key);
-        if (null != cacheModel) {
-            CacheDbUtils.getInstance().deleteCache(cacheModel);
-        }
+                .doOnError(new DeleteCacheConsumer(httpRequestBody, isCache));
     }
 
     private static Observable<HttpResponseModel<Object>> processData(final HttpRequestBody httpRequestBody, final boolean isCache) {
+        //无网络处理
         if (!NetworkUtils.isConnected()) {
             String toastStr = IApplication.getInstance().getResources().getString(R.string.no_internet_connection);
             if (!isCache) {
@@ -135,9 +112,9 @@ public class HttpUtils {
             return Observable.just(objectHttpResponseModel);
         }
         HashMap<String, Object> headerMap = new HashMap<>();
-        headerMap.put("CONNECT_TIMEOUT", httpRequestBody.getConnectTime());
-        headerMap.put("READ_TIMEOUT", httpRequestBody.getReadTime());
-        headerMap.put("WRITE_TIMEOUT", httpRequestBody.getWriteTime());
+        headerMap.put(RetrofitUtils.CONNECT_TIMEOUT, httpRequestBody.getConnectTime());
+        headerMap.put(RetrofitUtils.READ_TIMEOUT, httpRequestBody.getReadTime());
+        headerMap.put(RetrofitUtils.WRITE_TIMEOUT, httpRequestBody.getWriteTime());
         if (!httpRequestBody.getCustomHeader().isEmpty()) {
             headerMap.putAll(httpRequestBody.getCustomHeader());
         }
@@ -146,12 +123,14 @@ public class HttpUtils {
             case GET:
                 basicObservable = getApi().getData(httpRequestBody.getUrl(), headerMap);
                 break;
+            case POST:
+                basicObservable = getApi().postData(httpRequestBody.getUrl(), headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)));
+                break;
             case POSTBODY:
                 basicObservable = getApi().postBodyData(httpRequestBody.getUrl(), headerMap, httpRequestBody);
                 break;
             default:
-                basicObservable = getApi().postData(httpRequestBody.getUrl(), headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)));
-                break;
+                throw new AssertionError("Request body method is wrong!");
         }
         Observable<HttpResponseModel<Object>> netWorkObservable = basicObservable
                 .retryWhen(new RetryWhenNetworkException(httpRequestBody.getRetryCount(), httpRequestBody.getRetryDelay(), httpRequestBody.getRetryIncreaseDelay()))

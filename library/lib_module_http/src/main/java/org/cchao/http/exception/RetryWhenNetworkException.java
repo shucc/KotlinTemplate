@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 
 /**
@@ -41,12 +40,8 @@ public class RetryWhenNetworkException implements Function<Observable<? extends 
     @Override
     public Observable<?> apply(Observable<? extends Throwable> observable) {
         return observable
-                .zipWith(Observable.range(1, count + 1), new BiFunction<Throwable, Integer, Wrapper>() {
-                    @Override
-                    public Wrapper apply(Throwable throwable, Integer integer) {
-                        return new Wrapper(throwable, integer);
-                    }
-                }).flatMap(wrapper -> {
+                .zipWith(Observable.range(1, count + 1), (throwable, integer) -> new Wrapper(throwable, integer))
+                .flatMap(wrapper -> {
                     if ((wrapper.throwable instanceof ConnectException
                             || wrapper.throwable instanceof SocketTimeoutException
                             || wrapper.throwable instanceof TimeoutException)
@@ -64,7 +59,7 @@ public class RetryWhenNetworkException implements Function<Observable<? extends 
 
         private Throwable throwable;
 
-        public Wrapper(Throwable throwable, int index) {
+        Wrapper(Throwable throwable, int index) {
             this.index = index;
             this.throwable = throwable;
         }

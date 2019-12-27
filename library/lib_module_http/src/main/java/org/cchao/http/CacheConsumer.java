@@ -12,13 +12,13 @@ import io.reactivex.functions.Consumer;
  * @Date on 2019/8/5
  * @Description
  */
-public class CacheConsumer implements Consumer<HttpResponseModel<Object>> {
+class CacheConsumer implements Consumer<HttpResponseModel<Object>> {
 
     private HttpRequestBody httpRequestBody;
 
     private boolean isCache;
 
-    public CacheConsumer(HttpRequestBody httpRequestBody, boolean isCache) {
+    CacheConsumer(HttpRequestBody httpRequestBody, boolean isCache) {
         this.httpRequestBody = httpRequestBody;
         this.isCache = isCache;
     }

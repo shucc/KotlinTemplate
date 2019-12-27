@@ -1,10 +1,11 @@
 package org.cchao.common.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+
+import org.cchao.common.IApplication;
 
 /**
  * @author cchen6
@@ -27,8 +28,8 @@ public class ScreenUtils {
         return activity.getWindowManager().getDefaultDisplay();
     }
 
-    public static int dipToPx(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int dipToPx(float dpValue) {
+        final float scale = IApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
@@ -85,14 +86,13 @@ public class ScreenUtils {
     /**
      * 获取顶部状态栏高度
      *
-     * @param context
      * @return
      */
-    public static int getStatusBarHeight(Context context) {
+    public static int getStatusBarHeight() {
         int statusBarHeight = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = IApplication.getInstance().getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
+            statusBarHeight = IApplication.getInstance().getResources().getDimensionPixelSize(resourceId);
         }
         return statusBarHeight;
     }

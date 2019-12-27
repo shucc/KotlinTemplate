@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import org.cchao.kotlintemplate.R
+import java.lang.Exception
 import java.lang.IllegalStateException
 
 abstract class BaseDialog : DialogFragment() {
@@ -35,8 +36,8 @@ abstract class BaseDialog : DialogFragment() {
     override fun show(manager: FragmentManager, tag: String?) {
         try {
             super.show(manager, tag)
-        } catch (e: IllegalStateException) {
-
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

@@ -26,9 +26,9 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 class RetrofitUtils {
 
     private static final Retrofit RETROFIT;
-    private static final String CONNECT_TIMEOUT = "CONNECT_TIMEOUT";
-    private static final String READ_TIMEOUT = "READ_TIMEOUT";
-    private static final String WRITE_TIMEOUT = "WRITE_TIMEOUT";
+    static final String CONNECT_TIMEOUT = "CONNECT_TIMEOUT";
+    static final String READ_TIMEOUT = "READ_TIMEOUT";
+    static final String WRITE_TIMEOUT = "WRITE_TIMEOUT";
 
     static {
 
@@ -104,7 +104,7 @@ class RetrofitUtils {
     }
 
     private RetrofitUtils() {
-        throw new AssertionError("No instances");
+        throw new AssertionError("No instances!");
     }
 
     static <T> T create(Class<T> service) {
