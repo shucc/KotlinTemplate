@@ -24,8 +24,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation httpDependencies.stetho
-    implementation httpDependencies.stethoOkhttp
+    implementation androidxDependencies.annotation
     //retrofit
     implementation httpDependencies.retrofitConverterJackson
     implementation httpDependencies.retrofit2AdapterRxjava
@@ -33,5 +32,7 @@ dependencies {
     implementation httpDependencies.rxandroid
     implementation httpDependencies.rxjava2
     implementation dbDependencies.greendao
+    debugImplementation httpDependencies.stetho
+    debugImplementation httpDependencies.stethoOkhttp
     implementation project(':lib_module_common')
 }

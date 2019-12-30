@@ -25,6 +25,7 @@ class App : IApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        IApplication.getInstance().isDebug = BuildConfig.IS_DEBUG
         initDB()
     }
 

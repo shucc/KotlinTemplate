@@ -14,10 +14,47 @@ android {
         versionName PROJECT_BUILD.versionName
         vectorDrawables.useSupportLibrary = true
     }
+    signingConfigs {
+        release {
+            storeFile file('../test.jks')
+            storePassword '123456'
+            keyAlias 'key0'
+            keyPassword '123456'
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+            buildConfigField "Boolean", "IS_DEBUG", RELEASE_DEBUG
+            buildConfigField "String", "API_URL", RELEASE_API_URL
+        }
+        preview {
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            debuggable true
+            matchingFallbacks = ['release', 'debug']
+
+            buildConfigField "Boolean", "IS_DEBUG", PREVIEW_DEBUG
+            buildConfigField "String", "API_URL", PREVIEW_API_URL
+        }
+        debug {
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            debuggable true
+
+            buildConfigField "Boolean", "IS_DEBUG", TEST_DEBUG
+            buildConfigField "String", "API_URL", TEST_API_URL
         }
     }
     compileOptions {

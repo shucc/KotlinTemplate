@@ -10,12 +10,6 @@ android {
     }
 
     buildTypes {
-        debug {
-
-        }
-        preview {
-
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -30,6 +24,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation httpDependencies.retrofitConverterJackson
-    implementation httpDependencies.stetho
-    implementation httpDependencies.stethoOkhttp
+    debugImplementation httpDependencies.stetho
+    debugImplementation httpDependencies.stethoOkhttp
 }
