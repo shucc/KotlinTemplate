@@ -1,7 +1,7 @@
 package org.cchao.kotlintemplate.ui.activity.contract
 
-import org.cchao.kotlintemplate.ui.base.BasePresenter
-import org.cchao.kotlintemplate.ui.base.BaseView
+import org.cchao.common.ui.base.BasePresenter
+import org.cchao.common.ui.base.BaseView
 
 interface MainContract {
 

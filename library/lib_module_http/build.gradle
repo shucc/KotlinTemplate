@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion PROJECT_BUILD.compileVersion
@@ -25,6 +28,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation androidxDependencies.appcompat
+    implementation androidxDependencies.coreKtx
     //retrofit
     implementation httpDependencies.retrofitConverterJackson
     implementation httpDependencies.retrofit2AdapterRxjava

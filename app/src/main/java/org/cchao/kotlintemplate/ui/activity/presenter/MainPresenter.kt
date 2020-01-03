@@ -1,11 +1,11 @@
 package org.cchao.kotlintemplate.ui.activity.presenter
 
+import org.cchao.common.expansion.bindToDestroy
 import org.cchao.http.HttpUtils
-import org.cchao.kotlintemplate.expansion.bindToDestroy
 import org.cchao.kotlintemplate.model.TestModel
 import org.cchao.kotlintemplate.model.body.TestBody
 import org.cchao.kotlintemplate.ui.activity.contract.MainContract
-import org.cchao.kotlintemplate.ui.base.BasePresenterImpl
+import org.cchao.common.ui.base.BasePresenterImpl
 
 class MainPresenter : BasePresenterImpl<MainContract.View>(), MainContract.Presenter {
 

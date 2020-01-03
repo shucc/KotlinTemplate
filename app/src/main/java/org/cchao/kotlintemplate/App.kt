@@ -15,17 +15,14 @@ class App : IApplication() {
 
     companion object {
 
-        private lateinit var instance: App
-
-        fun getInstance(): App {
-            return instance
-        }
+        lateinit var instance: IApplication
+            private set
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        IApplication.getInstance().isDebug = BuildConfig.IS_DEBUG
+        instance.isDebug = BuildConfig.IS_DEBUG
         initDB()
     }
 

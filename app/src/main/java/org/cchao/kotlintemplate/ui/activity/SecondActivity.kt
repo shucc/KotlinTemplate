@@ -2,7 +2,7 @@ package org.cchao.kotlintemplate.ui.activity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import org.cchao.kotlintemplate.R
-import org.cchao.kotlintemplate.ui.base.BaseActivity
+import org.cchao.common.ui.base.BaseActivity
 
 /**
  * @author cchen6

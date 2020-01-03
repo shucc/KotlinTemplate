@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion PROJECT_BUILD.compileVersion
@@ -23,6 +26,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation androidxDependencies.appcompat
+    implementation androidxDependencies.coreKtx
+    //RxJava
+    implementation httpDependencies.rxandroid
+    implementation httpDependencies.rxjava2
     implementation httpDependencies.retrofitConverterJackson
     debugImplementation httpDependencies.stetho
     debugImplementation httpDependencies.stethoOkhttp

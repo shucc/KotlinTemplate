@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Loading文字-->
+    <string name="loading_default">请稍候...</string>
+</resources>

@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">KotlinTemplate</string>
-
-    <!--Loading文字-->
-    <string name="loading_default">请稍候...</string>
 </resources>
