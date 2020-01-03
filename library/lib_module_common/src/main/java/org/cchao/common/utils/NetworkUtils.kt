@@ -15,6 +15,6 @@ object NetworkUtils {
     val isConnected: Boolean
         get() {
             val cm = IApplication.instance.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            return null != cm && null != cm.activeNetworkInfo && cm.activeNetworkInfo!!.isAvailable
+            return null != cm.activeNetworkInfo && cm.activeNetworkInfo!!.isAvailable
         }
 }
