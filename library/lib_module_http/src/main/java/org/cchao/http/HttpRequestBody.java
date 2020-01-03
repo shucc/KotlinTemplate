@@ -1,7 +1,5 @@
 package org.cchao.http;
 
-import androidx.annotation.Keep;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
@@ -12,7 +10,6 @@ import java.util.Map;
  * @Date on 2019/8/2
  * @Description
  */
-@Keep
 public abstract class HttpRequestBody {
 
     @JsonIgnore

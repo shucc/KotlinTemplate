@@ -1,13 +1,10 @@
 package org.cchao.http;
 
-import androidx.annotation.Keep;
-
 /**
  * @author cchen6
  * @Date on 2019/8/2
  * @Description
  */
-@Keep
 public class HttpResponseModel<T> {
 
     public static final int CODE_ERROR = 0;
