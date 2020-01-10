@@ -65,11 +65,12 @@ ext {
             greendao: buildDependency("org.greenrobot", "greendao", "3.2.2"),
     ]
     otherDependencies = [
-            dagger       : buildDependency(daggerPackage, 'dagger', daggerVersion),
-            daggerCompile: buildDependency(daggerPackage, 'dagger-compiler', daggerVersion),
-            glide        : buildDependency(glidePackage, 'glide', glideVersion),
-            glideCompile : buildDependency(glidePackage, 'compiler', glideVersion),
-            eventbus     : 'org.greenrobot:eventbus:3.1.1',
-            rxpermission : 'com.github.shucc:RxPermissions:0.10.4'
+            dagger         : buildDependency(daggerPackage, 'dagger', daggerVersion),
+            daggerCompile  : buildDependency(daggerPackage, 'dagger-compiler', daggerVersion),
+            glide          : buildDependency(glidePackage, 'glide', glideVersion),
+            glideCompile   : buildDependency(glidePackage, 'compiler', glideVersion),
+            eventbus       : 'org.greenrobot:eventbus:3.1.1',
+            rxpermission   : 'com.github.shucc:RxPermissions:0.10.4',
+            verticalseekbar: 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:1.0.0'
     ]
 }

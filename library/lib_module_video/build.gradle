@@ -23,5 +23,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation androidxDependencies.appcompat
+    implementation otherDependencies.verticalseekbar
     implementation project(':lib_module_common')
 }

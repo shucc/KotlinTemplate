@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_volume_controller"
+    android:layout_width="120dp"
+    android:layout_height="100dp"
+    android:layout_centerInParent="true"
+    android:background="#66000000"
+    android:orientation="horizontal"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/img_volume_bg"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_video_volume" />
+
+    <org.cchao.video.widget.HorizontalProgressView
+        android:id="@+id/progress_volume"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="8dp"
+        app:horizontalColor="#4c4c4c"
+        app:horizontalProgressColor="@android:color/white" />
+
+</RelativeLayout>

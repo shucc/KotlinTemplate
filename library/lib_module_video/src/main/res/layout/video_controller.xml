@@ -44,7 +44,8 @@
             android:layout_width="32dp"
             android:layout_height="48dp"
             android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp"
             android:paddingTop="12dp"
             app:srcCompat="@drawable/ic_video_pause" />
 

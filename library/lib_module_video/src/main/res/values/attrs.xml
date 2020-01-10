@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--横向进度条-->
+    <declare-styleable name="HorizontalProgressView">
+        <attr name="horizontalColor" format="color" />
+        <attr name="horizontalProgressColor" format="color" />
+        <attr name="horizontalRound" format="boolean" />
+    </declare-styleable>
+</resources>
