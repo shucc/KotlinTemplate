@@ -12,7 +12,7 @@ class LoadingDialog : BaseDialog() {
     private var content: String? = null
 
     companion object {
-        const val KEY_CONTENT = "key_content"
+        private const val KEY_CONTENT = "key_content"
 
         fun showLoading(fragmentManager: FragmentManager): LoadingDialog {
             return showLoading(fragmentManager, null)

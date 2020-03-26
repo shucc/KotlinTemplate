@@ -5,6 +5,3 @@ project(':lib_module_common').projectDir = new File('library/lib_module_common')
 
 include ':lib_module_http'
 project(':lib_module_http').projectDir = new File('library/lib_module_http')
-
-include ':lib_module_video'
-project(':lib_module_video').projectDir = new File('library/lib_module_video')

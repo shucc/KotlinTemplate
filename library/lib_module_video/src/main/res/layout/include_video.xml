@@ -18,7 +18,7 @@
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
-    <com.xunao.easylife.ui.widget.VideoController
+    <org.cchao.video.widget.VideoController
         android:id="@+id/videoController"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

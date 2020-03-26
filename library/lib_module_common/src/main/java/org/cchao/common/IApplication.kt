@@ -3,8 +3,6 @@ package org.cchao.common
 import android.app.Application
 import android.content.Context
 
-import java.lang.reflect.Method
-
 /**
  * @author cchen6
  * @Date on 2019/8/2

@@ -83,7 +83,7 @@ public abstract class HttpRequestBody {
 
     public enum Method {
         POST,
-        POSTBODY,
+        POST_BODY,
         GET
     }
 }

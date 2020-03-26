@@ -13,6 +13,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**
@@ -30,5 +31,5 @@ public interface Api {
     Observable<HttpResponseModel<Object>> postBodyData(@Url String url, @HeaderMap HashMap<String, Object> headMap, @Body HttpRequestBody httpRequestBody);
 
     @GET
-    Observable<HttpResponseModel<Object>> getData(@Url String url, @HeaderMap HashMap<String, Object> headMap);
+    Observable<HttpResponseModel<Object>> getData(@Url String url, @HeaderMap HashMap<String, Object> headMap, @QueryMap Map<String, Object> queryMap);
 }

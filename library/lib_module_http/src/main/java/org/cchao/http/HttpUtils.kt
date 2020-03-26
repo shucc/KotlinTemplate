@@ -112,10 +112,10 @@ object HttpUtils {
             headerMap.putAll(httpRequestBody.customHeader)
         }
         val basicObservable: Observable<HttpResponseModel<Any>>
-        when (httpRequestBody.method) {
-            HttpRequestBody.Method.GET -> basicObservable = getApi().getData(httpRequestBody.url, headerMap)
-            HttpRequestBody.Method.POST -> basicObservable = getApi().postData(httpRequestBody.url, headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)))
-            HttpRequestBody.Method.POSTBODY -> basicObservable = getApi().postBodyData(httpRequestBody.url, headerMap, httpRequestBody)
+        basicObservable = when (httpRequestBody.method) {
+            HttpRequestBody.Method.GET -> getApi().getData(httpRequestBody.url, headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)))
+            HttpRequestBody.Method.POST -> getApi().postData(httpRequestBody.url, headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)))
+            HttpRequestBody.Method.POST_BODY -> getApi().postBodyData(httpRequestBody.url, headerMap, httpRequestBody)
             else -> throw AssertionError("Request body method is wrong!")
         }
         val netWorkObservable = basicObservable

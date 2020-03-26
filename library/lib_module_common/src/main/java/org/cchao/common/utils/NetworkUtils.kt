@@ -17,4 +17,13 @@ object NetworkUtils {
             val cm = IApplication.instance.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             return null != cm.activeNetworkInfo && cm.activeNetworkInfo!!.isAvailable
         }
+
+    /**
+     * 是否为wifi
+     */
+    val isWifi: Boolean
+        get() {
+            val cm = IApplication.instance.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            return null != cm.activeNetworkInfo && cm.activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI
+        }
 }

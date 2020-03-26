@@ -1,11 +1,10 @@
 package org.cchao.http
 
+import io.reactivex.functions.Consumer
 import org.cchao.common.utils.JsonUtils
 import org.cchao.common.utils.Md5Utils
 import org.cchao.http.db.CacheDbUtils
 import org.cchao.http.db.CacheModel
-
-import io.reactivex.functions.Consumer
 
 /**
  * @author cchen6
@@ -24,10 +23,10 @@ internal class CacheConsumer(private val httpRequestBody: HttpRequestBody, priva
             cacheModel = CacheModel(key, JsonUtils.toString(objectHttpResponseModel.data), objectHttpResponseModel.code, objectHttpResponseModel.msg, System.currentTimeMillis())
             CacheDbUtils.instance.saveCache(cacheModel)
         } else {
-            cacheModel.setTime(System.currentTimeMillis())
-            cacheModel.setContent(JsonUtils.toString(objectHttpResponseModel.data))
-            cacheModel.setCode(objectHttpResponseModel.code)
-            cacheModel.setMsg(objectHttpResponseModel.msg)
+            cacheModel.time = System.currentTimeMillis()
+            cacheModel.content = JsonUtils.toString(objectHttpResponseModel.data)
+            cacheModel.code = objectHttpResponseModel.code
+            cacheModel.msg = objectHttpResponseModel.msg
         }
     }
 }

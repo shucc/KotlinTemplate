@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">lib_module_video</string>
+    <!--视频播放-->
+    <string name="not_wifi">网络环境发生变化,当前无WIFI环境</string>
+    <string name="video_play_not_wifi_title">播放提醒</string>
+    <string name="video_play_not_wifi_content">您当前使用的是运营商网络,继续使用可能会产生流量费用，建议改用WIFI网络</string>
+    <string name="video_play_not_wifi_continue">继续播放</string>
+    <string name="video_play_not_wifi_cancel">取消播放</string>
+    <string name="video_play_not_wifi_prompt">您已设置2G/3G/4G网络下不允许播放视频</string>
+    <string name="video_crop_success">截图成功</string>
+    <string name="video_crop_save_loading">截图保存中…</string>
+    <string name="video_crop_save_success">已保存图片至</string>
+    <string name="video_crop_save_failure">保存图片失败</string>
+    <string name="video_share">分享视频到</string>
 </resources>
