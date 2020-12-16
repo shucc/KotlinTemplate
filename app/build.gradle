@@ -83,7 +83,7 @@ dependencies {
     implementation dbDependencies.greendao
     implementation otherDependencies.eventbus
     implementation otherDependencies.rxpermission
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
     implementation project(':lib_module_common')
     implementation project(':lib_module_http')
 }
