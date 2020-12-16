@@ -5,6 +5,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import org.cchao.common.IApplication
+import org.cchao.common.utils.FileUtils
 import org.cchao.common.utils.JsonUtils
 import org.cchao.common.utils.Md5Utils
 import org.cchao.common.utils.NetworkUtils
@@ -28,6 +29,16 @@ object HttpUtils {
             api = RetrofitUtils.create(Api::class.java)
         }
         return api!!
+    }
+
+    fun downloadFile(downloadUrl: String, fileName: String): Observable<String?> {
+        return getApi().download(downloadUrl)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    Observable.just(FileUtils.writeResponseBodyToDisk(fileName, it))
+                }
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun getData(httpRequestBody: HttpRequestBody): Observable<Any> {
