@@ -12,7 +12,7 @@ object FileUtils {
      * 创建文件夹
      */
     fun createFileFolder(folderName: String? = null): File {
-        var storageDir: File
+        val storageDir: File
         val storagePath: String = IApplication.instance.externalCacheDir!!.absolutePath
         storageDir = File(storagePath + (if (TextUtils.isEmpty(folderName)) "" else (File.separator + folderName)))
         if (!storageDir.exists()) {
@@ -52,7 +52,7 @@ object FileUtils {
 
     fun writeResponseBodyToDisk(fileName: String, body: ResponseBody, folderName: String? = null): String? {
         return try {
-            val savedFile: File = File(createFileFolder(folderName), fileName)
+            val savedFile = File(createFileFolder(folderName), fileName)
             var inputStream: InputStream? = null
             var outputStream: OutputStream? = null
             try {

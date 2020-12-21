@@ -68,7 +68,7 @@ internal class RetrofitUtils private constructor() {
                     val responseBody = response.body()
                     if (null != request.body() && null != responseBody) {
                         request.body()!!.writeTo(buffer)
-                        source = responseBody!!.source()
+                        source = responseBody.source()
                         source!!.request(Integer.MAX_VALUE.toLong())
                     }
                     L.d("Retrofit", "=========================================================================================")

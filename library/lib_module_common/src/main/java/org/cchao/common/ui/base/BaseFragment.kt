@@ -34,7 +34,11 @@ abstract class BaseFragment : Fragment() {
     }
 
     fun showLoading(content: String?) {
-        loadingDialog = LoadingDialog.showLoading(activity!!.supportFragmentManager, content)
+        if (null != loadingDialog && loadingDialog!!.isVisible) {
+            loadingDialog!!.setLoadingText(content)
+        } else {
+            loadingDialog = LoadingDialog.showLoading(activity!!.supportFragmentManager, content)
+        }
     }
 
     fun hideLoading() {

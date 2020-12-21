@@ -27,7 +27,11 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun showLoading(content: String?) {
-        loadingDialog = LoadingDialog.showLoading(supportFragmentManager, content)
+        if (null != loadingDialog && loadingDialog!!.isVisible) {
+            loadingDialog!!.setLoadingText(content)
+        } else {
+            loadingDialog = LoadingDialog.showLoading(supportFragmentManager, content)
+        }
     }
 
     fun hideLoading() {

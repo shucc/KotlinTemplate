@@ -1,9 +1,6 @@
 package org.cchao.common.utils;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -27,10 +24,6 @@ public class JsonUtils {
     public static String toString(Object obj) {
         try {
             return INSTANCE.writeValueAsString(obj);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,10 +33,6 @@ public class JsonUtils {
     public static <T> T fromJson(String json, Class<T> clazz) {
         try {
             return INSTANCE.readValue(json, clazz);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,10 +56,6 @@ public class JsonUtils {
     public static Map<String, Object> toMap(String json) {
         try {
             return INSTANCE.readValue(json, Map.class);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

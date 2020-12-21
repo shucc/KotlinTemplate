@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Loading文字-->
-    <string name="loading_default">请稍候...</string>
-
-    <string name="cancel">取消</string>
-    <string name="ok">确认</string>
-    <string name="not_network">当前没有网络!</string>
+    <string name="loading_default">loading…</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

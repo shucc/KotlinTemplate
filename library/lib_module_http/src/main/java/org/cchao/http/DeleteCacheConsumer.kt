@@ -1,11 +1,9 @@
 package org.cchao.http
 
+import io.reactivex.functions.Consumer
 import org.cchao.common.utils.JsonUtils
 import org.cchao.common.utils.Md5Utils
 import org.cchao.http.db.CacheDbUtils
-import org.cchao.http.db.CacheModel
-
-import io.reactivex.functions.Consumer
 
 internal class DeleteCacheConsumer(private val httpRequestBody: HttpRequestBody, private val isCache: Boolean) : Consumer<Throwable> {
 

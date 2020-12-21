@@ -46,4 +46,11 @@ class LoadingDialog : BaseDialog() {
     override fun bindEvent() {
 
     }
+    
+    fun setLoadingText(content: String?) {
+        if (null == dialog_loading_text) {
+            return
+        }
+        dialog_loading_text.text = if (TextUtils.isEmpty(content)) activity!!.getString(R.string.loading_default) else content
+    }
 }

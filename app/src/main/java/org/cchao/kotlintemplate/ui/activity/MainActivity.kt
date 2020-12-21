@@ -1,6 +1,7 @@
 package org.cchao.kotlintemplate.ui.activity
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.cchao.common.expansion.clickWithTrigger
 import org.cchao.common.expansion.showToast
 import org.cchao.common.ui.base.BaseMvpActivity
 import org.cchao.kotlintemplate.R
@@ -22,8 +23,12 @@ class MainActivity : BaseMvpActivity<MainContract.Presenter>(), MainContract.Vie
     }
 
     override fun bindEvent() {
-        text_test2.setOnClickListener {
-            showToast("hehe")
+        text_test.clickWithTrigger {
+            showLoading()
+            it.postDelayed({ showLoading("test") }, 2000)
+        }
+        text_test2.clickWithTrigger {
+            showToast("hhehe")
         }
     }
 

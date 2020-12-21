@@ -40,7 +40,7 @@ public class RetryWhenNetworkException implements Function<Observable<? extends 
     @Override
     public Observable<?> apply(Observable<? extends Throwable> observable) {
         return observable
-                .zipWith(Observable.range(1, count + 1), (throwable, integer) -> new Wrapper(throwable, integer))
+                .zipWith(Observable.range(1, count + 1), Wrapper::new)
                 .flatMap(wrapper -> {
                     if ((wrapper.throwable instanceof ConnectException
                             || wrapper.throwable instanceof SocketTimeoutException
@@ -53,7 +53,7 @@ public class RetryWhenNetworkException implements Function<Observable<? extends 
                 });
     }
 
-    private class Wrapper {
+    private static class Wrapper {
 
         private int index;
 
