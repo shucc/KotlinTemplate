@@ -17,7 +17,7 @@ internal class CacheConsumer(private val httpRequestBody: HttpRequestBody, priva
         if (!isCache || null == objectHttpResponseModel || !objectHttpResponseModel.isSuccess) {
             return
         }
-        val key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody))
+        val key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody)).plus(httpRequestBody.url)
         var cacheModel = CacheDbUtils.instance.queryCacheModel(key)
         if (null == cacheModel) {
             cacheModel = CacheModel(key, JsonUtils.toString(objectHttpResponseModel.data), objectHttpResponseModel.code, objectHttpResponseModel.msg, System.currentTimeMillis())

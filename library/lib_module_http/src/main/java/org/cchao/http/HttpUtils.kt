@@ -159,7 +159,7 @@ object HttpUtils {
             responseModel.msg = throwable.message
             return responseModel
         }
-        val key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody))
+        val key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody)).plus(httpRequestBody.url)
         val cacheModel = CacheDbUtils.instance.queryCacheModel(key)
         if (null == cacheModel) {
             responseModel.msg = throwable.message

@@ -14,10 +14,6 @@ import org.cchao.common.IApplication
  */
 object ScreenUtils {
 
-    //打开关闭弹出框
-    val OPEN_POP = 0
-    val HIDE_POP = 1
-
     /**
      * 获取顶部状态栏高度
      *
@@ -81,13 +77,11 @@ object ScreenUtils {
 
     /**
      * 设置弹出框出现与隐藏时背景透明度变化
-     *
-     * @param type
      */
-    fun setWindowAlpha(activity: Activity, type: Int) {
+    fun setWindowAlpha(activity: Activity, isOpenPop: Boolean) {
         //设置背景颜色变暗
         val lp = activity.window.attributes
-        if (type == OPEN_POP) {
+        if (isOpenPop) {
             lp.alpha = 0.6f
         } else {
             lp.alpha = 1.0f

@@ -7,10 +7,9 @@ import org.cchao.http.db.CacheDbUtils
 
 internal class DeleteCacheConsumer(private val httpRequestBody: HttpRequestBody, private val isCache: Boolean) : Consumer<Throwable> {
 
-    @Throws(Exception::class)
     override fun accept(throwable: Throwable) {
         if (isCache) {
-            val key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody))
+            val key = Md5Utils.getMd5(JsonUtils.toString(httpRequestBody)).plus(httpRequestBody.url)
             val cacheModel = CacheDbUtils.instance.queryCacheModel(key)
             if (null != cacheModel) {
                 CacheDbUtils.instance.deleteCache(cacheModel)
