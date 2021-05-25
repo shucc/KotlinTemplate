@@ -103,7 +103,7 @@ object HttpUtils {
                 .doOnError(DeleteCacheConsumer(httpRequestBody, isCache))
     }
 
-    private fun processData(httpRequestBody: HttpRequestBody, isCache: Boolean): Observable<HttpResponseModel<Any>> {
+            private fun processData(httpRequestBody: HttpRequestBody, isCache: Boolean): Observable<HttpResponseModel<Any>> {
         //无网络处理
         if (!NetworkUtils.isConnected) {
             val toastStr = IApplication.instance.resources.getString(R.string.no_internet_connection)

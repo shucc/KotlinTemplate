@@ -33,6 +33,8 @@ dependencies {
     implementation httpDependencies.rxandroid
     implementation httpDependencies.rxjava2
     implementation httpDependencies.retrofitConverterJackson
+    implementation otherDependencies.coroutinesKotlin
+    implementation otherDependencies.coroutinesAndroid
     debugImplementation httpDependencies.stetho
     debugImplementation httpDependencies.stethoOkhttp
 }

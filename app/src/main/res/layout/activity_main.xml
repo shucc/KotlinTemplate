@@ -23,4 +23,9 @@
         android:textColor="#ffffff"
         android:textSize="16sp" />
 
+    <ImageView
+        android:id="@+id/iv_test"
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+
 </LinearLayout>
