@@ -6,10 +6,14 @@ import org.cchao.common.ui.base.BaseView
 interface MainContract {
 
     interface View : BaseView {
-        fun testView()
+
+        fun onGetDataSuccess(data: String)
+
+        fun onGetDataError(msg: String)
     }
 
     interface Presenter : BasePresenter {
-        fun testPresenter()
+
+        fun getData()
     }
 }

@@ -1,6 +1,6 @@
 package org.cchao.http
 
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 import org.cchao.common.utils.JsonUtils
 import org.cchao.common.utils.Md5Utils
 import org.cchao.http.db.CacheDbUtils

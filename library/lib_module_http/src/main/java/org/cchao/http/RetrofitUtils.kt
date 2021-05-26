@@ -8,7 +8,7 @@ import okio.BufferedSource
 import org.cchao.common.IApplication
 import org.cchao.common.utils.L
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -99,7 +99,7 @@ internal class RetrofitUtils private constructor() {
                     .client(client)
                     .baseUrl("https://www.baidu.com/")
                     .addConverterFactory(JacksonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                     .build()
         }
 

@@ -1,9 +1,9 @@
 package org.cchao.http
 
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.functions.Function
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.cchao.common.IApplication
 import org.cchao.common.utils.FileUtils
 import org.cchao.common.utils.JsonUtils
@@ -68,14 +68,14 @@ object HttpUtils {
     fun <T> getData(httpRequestBody: HttpRequestBody, classType: Class<T>, isCache: Boolean): Observable<T> {
         return processData(httpRequestBody, isCache)
                 .flatMap { flatResponse(it) }
-                .map { o -> JsonUtils.fromJson(o.toString(), classType) }
+                .map { o -> JsonUtils.fromJson(JsonUtils.toString(o), classType) }
                 .doOnError(DeleteCacheConsumer(httpRequestBody, isCache))
     }
 
     fun <T> getDataList(httpRequestBody: HttpRequestBody, classType: Class<T>, isCache: Boolean): Observable<List<T>> {
         return processData(httpRequestBody, isCache)
                 .flatMap { flatResponse(it) }
-                .map { o -> JsonUtils.toList(o.toString(), classType) }
+                .map { o -> JsonUtils.toList(JsonUtils.toString(o), classType) }
                 .doOnError(DeleteCacheConsumer(httpRequestBody, isCache))
     }
 
@@ -85,7 +85,7 @@ object HttpUtils {
                     val responseModel = HttpResponseModel<T>()
                     responseModel.msg = objectHttpResponseModel.msg
                     responseModel.code = objectHttpResponseModel.code
-                    responseModel.data = JsonUtils.fromJson(objectHttpResponseModel.data.toString(), classType)
+                    responseModel.data = JsonUtils.fromJson(JsonUtils.toString(objectHttpResponseModel.data), classType)
                     responseModel
                 }
                 .doOnError(DeleteCacheConsumer(httpRequestBody, isCache))
@@ -122,8 +122,7 @@ object HttpUtils {
         if (!httpRequestBody.customHeader.isNullOrEmpty()) {
             headerMap.putAll(httpRequestBody.customHeader)
         }
-        val basicObservable: Observable<HttpResponseModel<Any>>
-        basicObservable = when (httpRequestBody.method) {
+        val basicObservable: Observable<HttpResponseModel<Any>> = when (httpRequestBody.method) {
             HttpRequestBody.Method.GET -> getApi().getData(httpRequestBody.url, headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)))
             HttpRequestBody.Method.POST -> getApi().postData(httpRequestBody.url, headerMap, JsonUtils.toMap(JsonUtils.toString(httpRequestBody)))
             HttpRequestBody.Method.POST_BODY -> getApi().postBodyData(httpRequestBody.url, headerMap, httpRequestBody)

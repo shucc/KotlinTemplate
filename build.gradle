@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.4.30'
+    ext.kotlin_version = '1.4.32'
     repositories {
         google()
         jcenter()
@@ -39,30 +39,30 @@ ext {
             versionName     : "0.0.1"
     ]
     BUILD = PROJECT_BUILD
-    retrofitVersion = '2.5.0'
+    retrofitVersion = '2.9.0'
     retrofitPackage = 'com.squareup.retrofit2'
     daggerVersion = '2.23.1'
     daggerPackage = 'com.google.dagger'
-    glideVersion = '4.10.0'
+    glideVersion = '4.12.0'
     glidePackage = 'com.github.bumptech.glide'
 
     androidxDependencies = [
-            appcompat       : 'androidx.appcompat:appcompat:1.1.0',
-            annotation      : 'androidx.annotation:annotation:1.1.0',
-            coreKtx         : 'androidx.core:core-ktx:1.1.0',
-            constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.3',
-            recyclerview    : 'androidx.recyclerview:recyclerview:1.1.0'
+            appcompat       : 'androidx.appcompat:appcompat:1.2.0',
+            annotation      : 'androidx.annotation:annotation:1.2.0',
+            coreKtx         : 'androidx.core:core-ktx:1.3.2',
+            recyclerview    : 'androidx.recyclerview:recyclerview:1.2.0',
+            constraintlayout: 'androidx.constraintlayout:constraintlayout:2.0.4'
     ]
     httpDependencies = [
             retrofitConverterJackson: buildDependency(retrofitPackage, 'converter-jackson', retrofitVersion),
-            retrofit2AdapterRxjava  : buildDependency(retrofitPackage, 'adapter-rxjava2', retrofitVersion),
-            rxjava2                 : 'io.reactivex.rxjava2:rxjava:2.2.8',
-            rxandroid               : 'io.reactivex.rxjava2:rxandroid:2.1.1',
-            stetho                  : 'com.facebook.stetho:stetho:1.5.1',
-            stethoOkhttp            : 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+            retrofitAdapterRxjava  : buildDependency(retrofitPackage, 'adapter-rxjava3', retrofitVersion),
+            rxjava                 : 'io.reactivex.rxjava3:rxjava:3.0.0',
+            rxandroid               : 'io.reactivex.rxjava3:rxandroid:3.0.0',
+            stetho                  : 'com.facebook.stetho:stetho:1.6.0',
+            stethoOkhttp            : 'com.facebook.stetho:stetho-okhttp3:1.6.0'
     ]
     dbDependencies = [
-            greendao: buildDependency("org.greenrobot", "greendao", "3.2.2"),
+            greendao: buildDependency("org.greenrobot", "greendao", "3.3.0"),
     ]
     otherDependencies = [
             dagger         : buildDependency(daggerPackage, 'dagger', daggerVersion),
@@ -71,6 +71,8 @@ ext {
             glideCompile   : buildDependency(glidePackage, 'compiler', glideVersion),
             eventbus       : 'org.greenrobot:eventbus:3.1.1',
             rxpermission   : 'com.github.shucc:RxPermissions:0.10.4',
-            verticalseekbar: 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:1.0.0'
+            verticalseekbar: 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:1.0.0',
+            coroutinesKotlin: 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8',
+            coroutinesAndroid: 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
     ]
 }

@@ -5,8 +5,8 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import io.reactivex.Observable;
-import io.reactivex.functions.Function;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Function;
 
 /**
  * @author cchen6

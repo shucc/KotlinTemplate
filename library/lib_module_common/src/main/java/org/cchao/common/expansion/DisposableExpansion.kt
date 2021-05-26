@@ -1,6 +1,6 @@
 package org.cchao.common.expansion
 
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.disposables.Disposable
 import org.cchao.common.ui.base.BasePresenter
 
 /**

@@ -1,8 +1,8 @@
 package org.cchao.kotlintemplate.ui.activity
 
-import android.view.View
+import coil.load
+import coil.transform.CircleCropTransformation
 import kotlinx.android.synthetic.main.activity_main.*
-import org.cchao.common.expansion.clickWithTrigger
 import org.cchao.common.expansion.showToast
 import org.cchao.common.ui.base.BaseMvpActivity
 import org.cchao.kotlintemplate.R
@@ -20,18 +20,24 @@ class MainActivity : BaseMvpActivity<MainContract.Presenter>(), MainContract.Vie
     }
 
     override fun initData() {
-        presenter.testPresenter()
+        showLoading()
+        presenter.getData()
+        iv_data.load("http://file02.16sucai.com/d/file/2015/0408/779334da99e40adb587d0ba715eca102.jpg") {
+            transformations(CircleCropTransformation())
+        }
     }
 
     override fun bindEvent() {
-        text_test.clickWithTrigger(View.OnClickListener {
-            showLoading()
-            it.postDelayed({showLoading("test")}, 200)
-        })
-        text_test2.clickWithTrigger(View.OnClickListener { showToast("How are you!") })
+
     }
 
-    override fun testView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onGetDataSuccess(data: String) {
+        hideLoading()
+        tv_data.text = data
+    }
+
+    override fun onGetDataError(msg: String) {
+        hideLoading()
+        showToast(msg)
     }
 }
