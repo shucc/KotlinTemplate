@@ -73,6 +73,8 @@ dependencies {
     implementation androidxDependencies.constraintlayout
     implementation androidxDependencies.recyclerview
     implementation("io.coil-kt:coil:1.2.1")
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     implementation dbDependencies.greendao
     implementation otherDependencies.eventbus
     implementation otherDependencies.rxpermission

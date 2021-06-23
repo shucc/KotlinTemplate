@@ -46,4 +46,12 @@ abstract class BaseFragment : Fragment() {
             loadingDialog!!.dismiss()
         }
     }
+
+    override fun onDestroy() {
+        hideLoading()
+        if (null != loadingDialog) {
+            loadingDialog = null
+        }
+        super.onDestroy()
+    }
 }

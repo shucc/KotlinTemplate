@@ -1,8 +1,10 @@
 package org.cchao.kotlintemplate.ui.activity
 
+import android.view.View
 import coil.load
 import coil.transform.CircleCropTransformation
 import kotlinx.android.synthetic.main.activity_main.*
+import org.cchao.common.expansion.clickWithTrigger
 import org.cchao.common.expansion.showToast
 import org.cchao.common.ui.base.BaseMvpActivity
 import org.cchao.kotlintemplate.R
@@ -10,6 +12,10 @@ import org.cchao.kotlintemplate.ui.activity.contract.MainContract
 import org.cchao.kotlintemplate.ui.activity.presenter.MainPresenter
 
 class MainActivity : BaseMvpActivity<MainContract.Presenter>(), MainContract.View {
+
+    companion object {
+        var secondActivity: SecondActivity? = null
+    }
 
     override fun bindLayout(): Int {
         return R.layout.activity_main
@@ -28,7 +34,7 @@ class MainActivity : BaseMvpActivity<MainContract.Presenter>(), MainContract.Vie
     }
 
     override fun bindEvent() {
-
+        iv_data.clickWithTrigger({ SecondActivity.start(this) })
     }
 
     override fun onGetDataSuccess(data: String) {
