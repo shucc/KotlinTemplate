@@ -41,4 +41,8 @@ class CacheDbUtils private constructor() {
         val cacheModelList = queryBuilder.list()
         return if (null == cacheModelList || cacheModelList.isEmpty()) null else cacheModelList[0]
     }
+
+    fun clearAllCache() {
+        daoSession.cacheModelDao.deleteAll()
+    }
 }

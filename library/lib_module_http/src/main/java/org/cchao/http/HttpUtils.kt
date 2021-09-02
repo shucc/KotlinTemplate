@@ -198,4 +198,8 @@ object HttpUtils {
             }
         }
     }
+
+    fun clearAllCache() {
+        CacheDbUtils.instance.clearAllCache()
+    }
 }
