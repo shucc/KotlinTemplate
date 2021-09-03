@@ -24,19 +24,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions{
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation androidxDependencies.appcompat
-    implementation androidxDependencies.coreKtx
     //retrofit
     implementation httpDependencies.retrofitConverterJackson
-    implementation httpDependencies.retrofit2AdapterRxjava
-    //RxJava
-    implementation httpDependencies.rxandroid
-    implementation httpDependencies.rxjava2
+    implementation httpDependencies.retrofitAdapterRxjava
     implementation dbDependencies.greendao
     debugImplementation httpDependencies.stetho
     debugImplementation httpDependencies.stethoOkhttp

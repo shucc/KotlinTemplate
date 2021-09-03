@@ -1,27 +1,24 @@
 package org.cchao.kotlintemplate.ui.activity
 
-import kotlinx.android.synthetic.main.activity_main.*
+import android.content.Context
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import org.cchao.kotlintemplate.R
-import org.cchao.common.ui.base.BaseActivity
 
-/**
- * @author cchen6
- * @Date on 2019/6/19
- * @Description
- */
-class SecondActivity : BaseActivity() {
+class SecondActivity : AppCompatActivity() {
 
-    override fun bindLayout(): Int {
-        return R.layout.activity_main
-    }
-
-    override fun initData() {
-
-    }
-
-    override fun bindEvent() {
-        text_test.setOnClickListener {
-            showLoading("喝喝会...")
+    companion object {
+        @JvmStatic
+        fun start(context: Context) {
+            val starter = Intent(context, SecondActivity::class.java)
+            context.startActivity(starter)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_second)
+        MainActivity.secondActivity = this
     }
 }

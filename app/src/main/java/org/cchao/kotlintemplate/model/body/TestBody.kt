@@ -2,13 +2,13 @@ package org.cchao.kotlintemplate.model.body
 
 import org.cchao.http.HttpRequestBody
 
-class TestBody(val temp: String) : HttpRequestBody() {
+class TestBody : HttpRequestBody() {
 
     override fun getMethod(): Method {
         return Method.GET
     }
 
     override fun getUrl(): String {
-        return "https://www.baidu.com"
+        return "http://yapi.smaloo.com/mock/97/en/api/v1/c0/index/index"
     }
 }
