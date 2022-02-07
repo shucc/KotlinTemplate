@@ -17,10 +17,13 @@ abstract class BaseFragment : Fragment() {
     private var loadingDialog: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = LayoutInflater.from(container!!.context).inflate(bindLayout(), container, false)
+        return LayoutInflater.from(container!!.context).inflate(bindLayout(), container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initData()
         bindEvent()
-        return view
     }
 
     abstract fun bindLayout(): Int
