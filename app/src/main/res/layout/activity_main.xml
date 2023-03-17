@@ -19,4 +19,9 @@
         android:textSize="14sp"
         tools:text="Test" />
 
+    <FrameLayout
+        android:id="@+id/fl_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>
